@@ -6,5 +6,5 @@
 #include "U.h"
 
 int main(int argc, char* argv[]){
-	
+	U test("UnicodeData.txt", "Hello there");
 }

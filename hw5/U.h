@@ -26,7 +26,10 @@ class U {
 		U(const U &u) : properties_file(u.properties_file), utf_string(u.utf_string){}
 
 		// Test Constructor -- Take a property file and literal string.
-		U(std::string p, std::string u) : properties_file(p), utf_string(u){}
+		U(std::string p, std::string u) : properties_file(p), utf_string(u){
+			propfile(properties_file);	
+			readfile(utf_string);	
+		}
 
 		// Assignment Constructor
 		U& operator=(const U &rhs){
@@ -39,7 +42,7 @@ class U {
 		~U(){}
 
 		// Methods of Class 'U' --------------------------------
-		void readFile(std::string fileName){}
+		void readfile(std::string fileName){}
 
 		// Parse Properties file -- 
 		void propfile(std::string fileName){
@@ -78,6 +81,9 @@ class U {
 				prop_counts[property_name] = 0;					// Init all properties to count of 0
 			}
 			propfile.close();		// Close property file
+
+			// TEST: prints out prop_counts (assumes correct propNames and prop_counts and utf_char_prop)
+			for (auto a : prop_counts){std::cout << a.first << ": " << a.second << std::endl;}
 		}
 		
 		// return size (stored per data object in private vars)
