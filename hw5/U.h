@@ -1,7 +1,7 @@
-//	Josh Mau / 830802582
-//	Mar 16, 2017
-// 	U.h -- Header file for Object Oriented
-//			UTF-8 character number from files
+// Josh Mau
+// Mar 16, 2017
+//  U.h -- Header file for Object Oriented
+//	UTF-8 character number from files
 
 #ifndef U_H_INCLUDED
 #define U_H_INCLUDED
