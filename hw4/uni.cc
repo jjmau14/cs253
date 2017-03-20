@@ -1,4 +1,4 @@
-// Josh Mau / 830-802-582
+// Josh Mau
 // Jan. 23, 2017
 // HW4 -- Count characters in files
 //          passed with properties file.
