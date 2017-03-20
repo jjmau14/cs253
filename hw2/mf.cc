@@ -1,4 +1,4 @@
-// Josh Mau / 830-802-582
+// Josh Mau
 // Jan. 30, 2017
 // HW2 -- Analyze standard input and display
 //        a summary of results. Displays number
