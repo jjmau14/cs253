@@ -1,4 +1,4 @@
-// Josh Mau / 830-802-582
+// Josh Mau
 // Mar. 20, 2017
 // U.cpp -- Test 'main' for U.h
 
