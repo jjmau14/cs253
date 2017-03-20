@@ -1,3 +1,6 @@
+// Josh Mau
+// Mar. 1, 2017
+// HW3 -- ...
 #include <iostream>
 #include <fstream>
 #include <vector>
