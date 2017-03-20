@@ -90,7 +90,7 @@ class U {
 			return 0;
 		}
 
-		std::set<std::string> props(){return std::set<std::string>;}
+		std::set<std::string> props(){return propNames;}
 
 	private:
 		std::string properties_file;
