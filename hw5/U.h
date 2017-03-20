@@ -1,7 +1,7 @@
 // Josh Mau
 // Mar 16, 2017
-//  U.h -- Header file for Object Oriented
-//	UTF-8 character number from files
+// U.h -- Header file for Object Oriented
+//		UTF-8 character number from files
 
 #ifndef U_H_INCLUDED
 #define U_H_INCLUDED
@@ -18,14 +18,24 @@
 class U {
 	public:
 		// Constructors and Destructor -------------------------
-		U(){}										
+
+		// Default Constructor -- Accumulated String (utf_string) is empty.
+		U(){utf_string = "";}	
+		
+		// Copy Constructor -- Copy an existing U object to a new object of type: U.
 		U(const U &u) : properties_file(u.properties_file), utf_string(u.utf_string){}
+
+		// Test Constructor -- Take a property file and literal string.
 		U(std::string p, std::string u) : properties_file(p), utf_string(u){}
-		U& operator=(const U &u){
-			properties_file = u.properties_file;
-			utf_string = u.utf_string;
+
+		// Assignment Constructor
+		U& operator=(const U &rhs){
+			properties_file = rhs.properties_file;
+			utf_string = rhs.utf_string;
 			return *this;
 		}
+	
+		// Destructor -- No dynamic data
 		~U(){}
 
 		// Methods of Class 'U' --------------------------------
@@ -85,7 +95,7 @@ class U {
 	private:
 		std::string properties_file;
 		std::string utf_string;
-		int utf_size = 0;
+		int utf_size;
 		std::set<std::string> propNames;
 		std::vector<std::string> utf_chars;
 		std::map<int, std::string> utf_char_prop;
