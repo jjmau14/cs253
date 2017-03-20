@@ -17,7 +17,7 @@
 
 class U {
 	public:
-		// -----------------------------------------------------
+		// Constructors and Destructor -------------------------
 		U(){}										
 		U(const U &u) : properties_file(u.properties_file), utf_string(u.utf_string){}
 		U(std::string p, std::string u) : properties_file(p), utf_string(u){}
@@ -27,7 +27,8 @@ class U {
 			return *this;
 		}
 		~U(){}
-		// -----------------------------------------------------
+
+		// Methods of Class 'U' --------------------------------
 		void readFile(std::string fileName){}
 
 		void propfile(std::string fileName){
