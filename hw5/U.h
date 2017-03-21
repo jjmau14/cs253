@@ -51,7 +51,7 @@ class U {
 			propfile.open(fileName);	// open property file
 			std::string line = "";
 			if (!propfile.is_open())	// throw error if could not open property file
-				throw "Properties file could not be opened!";
+				throw std::string("Properties file could not be opened!");
 
 			while(std::getline(propfile, line)){	// Read property file line by line
 				std::string temp_string = "";	
@@ -81,9 +81,6 @@ class U {
 				prop_counts[property_name] = 0;					// Init all properties to count of 0
 			}
 			propfile.close();		// Close property file
-
-			// TEST: prints out prop_counts (assumes correct propNames and prop_counts and utf_char_prop)
-			for (auto a : prop_counts){std::cout << a.first << ": " << a.second << std::endl;}
 		}
 		
 		// return size (stored per data object in private vars)
@@ -95,14 +92,14 @@ class U {
 		
 		// Loops through all property counts until it finds the method
 		// 	parameter or hits the end of the map.
-		int propcount(std::string property){
+		int propcount(std::string property) const {
 			if (prop_counts.find(property) != prop_counts.end())	// if passed prop name == current item in map
 				return prop_counts.find(property)->second;			// return that property->second (first = name; second = count)
 			return 0;												// else not found (aka return 0)
 		}
 		
 		// Returns set of all property names
-		std::set<std::string> props(){return propNames;}
+		std::set<std::string> props() const {return propNames;}
 
 	private:
 		std::string properties_file;
