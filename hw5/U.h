@@ -1,7 +1,8 @@
 // Josh Mau
 // Mar 16, 2017
 // U.h -- Header file for Object Oriented
-//		UTF-8 character number from files
+//		Read and categorize UTF-8 characters
+// 		from multiple files.
 
 #ifndef U_H_INCLUDED
 #define U_H_INCLUDED
