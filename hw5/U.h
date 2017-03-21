@@ -20,10 +20,15 @@ class U {
 		// Constructors and Destructor -------------------------
 
 		// Default Constructor -- Accumulated String (utf_string) is empty.
-		U(){utf_string = "";}	
+		U(){
+			utf_string = "";
+			properties_file = "";		
+		}	
 		
 		// Copy Constructor -- Copy an existing U object to a new object of type: U.
-		U(const U &u) : properties_file(u.properties_file), utf_string(u.utf_string){}
+		U(const U &rhs) : properties_file(rhs.properties_file), utf_string(rhs.utf_string){
+			// Nothing left to do
+		}
 
 		// Test Constructor -- Take a property file and literal string.
 		U(std::string p, std::string u) : properties_file(p), utf_string(u){
@@ -32,7 +37,7 @@ class U {
 		}
 
 		// Assignment Constructor
-		U& operator=(const U &rhs){
+		U& operator=(const U &rhs) {
 			properties_file = rhs.properties_file;
 			utf_string = rhs.utf_string;
 			return *this;

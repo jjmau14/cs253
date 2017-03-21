@@ -10,7 +10,10 @@ using namespace std;
 
 int main(int argc, char* argv[]){
 	try {
-		const U test("cantopen.txt", "Hello there");
+		U test("UnicodeData.txt", "Hello there");
+		U assignment_ctor_test;
+		assignment_ctor_test = test;
+		U copy_ctor_test(test);
 		for ( auto a : test.props()){
 			cout << a << ": " << test.propcount(a) << endl;	
 		}
