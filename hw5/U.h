@@ -120,7 +120,10 @@ class U {
 			propNames.clear();
 			utf_char_prop.clear();
 			utf_chars.clear();
-		}			
+		}		
+		void parse_utf(std::string line){
+			
+		}	
 };
 
 #endif
