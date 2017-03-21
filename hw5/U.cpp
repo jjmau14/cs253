@@ -2,7 +2,7 @@
 // Mar. 20, 2017
 // U.cpp -- Test 'main' for U.h
 
-#include <stdio.h>
+#include <iostream>
 #include <cstring>
 #include "U.h"
 
