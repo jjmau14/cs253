@@ -36,7 +36,7 @@ class U {
 			readfile(utf_string);	
 		}
 
-		// Assignment Constructor
+		// Assignment Operator
 		U& operator=(const U &rhs) {
 			properties_file = rhs.properties_file;
 			utf_string = rhs.utf_string;
@@ -81,7 +81,7 @@ class U {
 				        else if(semi_colon_count > 2)		// On third semicolon, break and add to the following data members
 				            break;
 				    }
-				    utf_char_prop[hex_value] = temp_string;		// Maps hex code to a property value (ie. 0x0066 mapped to Lu -- 'A')
+				    utf_char_prop[hex_value] = temp_string;		// Maps hex code to a property value (ie. 0x0065 mapped to Lu -- 'A')
 				    propNames.insert(temp_string);				// Adds property names to set (not multiset. aka add unique names only)
 			}
 			for (auto property_name : propNames){
