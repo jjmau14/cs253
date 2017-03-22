@@ -49,7 +49,85 @@ class U {
 
 		// Methods of Class 'U' --------------------------------
 		void readfile(std::string fileName){
-			// TODO: implement readfile method
+			std::ifstream readfile;
+			readfile.open(fileName);
+			std::string line = "";			
+			if (!readfile.is_open())
+				throw std::string("File could not be opened!");
+			while(std::getline(readfile, line)){
+				if ( utf_char_prop.find('\n') != utf_char_prop.end() && !readfile.eof()){
+               		std::string key = utf_char_prop.at('\n');
+                	prop_counts.at(key) += 1;
+					utf_string += '\n';
+            	}
+				           int i = 0;
+		        int flag = 0;
+		        for ( char c : line ){
+					utf_string += c;
+		            if (flag > 0){
+		                // If the next bit doesn't begin with 10xxxxxx error out
+		                if ( ((c&0x000000FF)&0xC0) != 0x80){
+		                    std::cerr << "Error in byte: " << std::hex << (c&0x000000FF) << std::endl;
+		                    return;
+		                }
+		                flag--;     // decrement flag
+		                i++;        // incrememnt current index of tempString
+		                continue;   // skip byte (already been read) 
+		            }
+		            
+		            // For Range U+0000 - U+007F
+		            if (c >= 0x0000 && c <= 0x007F){
+		                if ( utf_char_prop.find(c) != utf_char_prop.end()){ 	// If that number is in list of properties
+		                    std::string key = utf_char_prop.at(c);       		// Get property of the Unicode character (like Lu or Cc)
+		                    prop_counts.at(key) += 1;        					// Increment counter for that property
+		                }
+		            }else{
+		                // Convert to unsigned int
+		                unsigned int a = (c&0x000000FF);
+		                
+		                // For Range U+0080 - U+07FF
+		                if ((a&0xE0) == 0xC0){
+		                    flag = 1;       // Skip next byte
+		                    a &= 0x1F;      // Remove first 3 bits 110xxxxx
+		                    a <<= 6;        // Shift left 6 for next byte
+		                    a |= ((line[i+1]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
+		                    //cout << hex << a << endl;
+		                }
+		                
+		                // For Range U+0800 = U+FFFF
+		                else if ((a&0xF0) == 0xE0){
+		                    flag = 2;       // Skip next two bytes
+		                    a &= 0x0F;      // Remove first 4 bits 1110xxxx
+		                    a <<= 6;        // Shift left 6 for next byte
+		                    a |= ((line[i+1]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
+		                    a <<= 6;        // Shift left 6 for next byte
+		                    a |= ((line[i+2]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
+		                    //cout << hex << a << endl;
+		                }
+		                
+		                // For Range U+10000 - U+1FFFFF
+		                else if ((a&0xF8) == 0xF0){
+		                    flag = 3;       // Skip next three bytes
+		                    a &= 0x07;      // Remove first five bits 11110xxx
+		                    a <<= 6;        // Shift left 6 for next byte
+		                    a |= ((line[i+1]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
+		                    a <<= 6;        // Shift left 6 for next byte
+		                    a |= ((line[i+2]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
+		                    a <<= 6;        // Shift left 6 for next byte
+		                    a |= ((line[i+3]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
+		                    //cout << hex << a << endl; 
+		                }
+		                
+		                if ( utf_char_prop.find(a) != utf_char_prop.end()){   // If that number is in list of properties
+		                    std::string key = utf_char_prop.at(a);           		// Get property of the Unicode character (like Lu or Cc)
+		                    prop_counts.at(key) += 1;           			 	// Increment counter for that property
+		                }
+		            }
+					utf_size++;
+		            i++;    // Increment Index Counter
+		        }
+			}
+			std::cout << utf_string << std::endl;
 		}
 
 		// Parse Properties file -- 
@@ -95,8 +173,8 @@ class U {
 		int size() { return utf_size; }
 
 		std::string get(){return utf_string;}
-		std::string get(int index){return "";}
-		std::string get(int start, int end){return "";}
+		std::string get(int index){return utf_string;}
+		std::string get(int start, int end){return utf_string;}
 		
 		// Loops through all property counts until it finds the method
 		// 	parameter or hits the end of the map.
