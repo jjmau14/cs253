@@ -22,9 +22,8 @@ class U {
 
 		// Default Constructor -- Accumulated String (utf_string) is empty.
 		U(){
-			utf_string = "";
-			properties_file = "";	
-			utf_size = 0;	
+			properties_file = "";
+			utf_index = 0;	
 		}	
 		
 		// Copy Constructor -- Copy an existing U object to a new object of type: U.
@@ -33,10 +32,10 @@ class U {
 		}
 
 		// Test Constructor -- Take a property file and literal string.
-		U(std::string p, std::string u) : properties_file(p), utf_string(u){
+		U(std::string p, std::string u) : properties_file(p), literal(u){
 			propfile(properties_file);	
-			readfile(utf_string);
-			utf_size = 0;	
+            // TODO: implement readfile for literal string
+			utf_index = 0;	
 		}
 
 		// Assignment Operator
@@ -61,9 +60,11 @@ class U {
 				if ( utf_char_prop.find('\n') != utf_char_prop.end() && !readfile.eof()){
                		std::string key = utf_char_prop.at('\n');
                 	prop_counts.at(key) += 1;
-					// TODO: ADD NEWLINE TO UTF MAP
+					utf_string[utf_index] = "\n";
+                    utf_index++;
             	}
-				           int i = 0;
+                
+                int i = 0;
 		        int flag = 0;
 		        for ( char c : line ){
 		            if (flag > 0){
@@ -81,7 +82,8 @@ class U {
 		                if ( utf_char_prop.find(c) != utf_char_prop.end()){ 	// If that number is in list of properties
 		                    std::string key = utf_char_prop.at(c);       		// Get property of the Unicode character (like Lu or Cc)
 		                    prop_counts.at(key) += 1;        					// Increment counter for that property
-							// TODO: ADD NEWLINE TO UTF MAP
+							utf_string[utf_index] = c;
+                            utf_index++;
 		                }
 		            }else{
 		                // Convert to unsigned int
@@ -89,43 +91,45 @@ class U {
 		                
 		                // For Range U+0080 - U+07FF
 		                if ((a&0xE0) == 0xC0){
-		                    flag = 1;       // Skip next byte
-		                    a &= 0x1F;      // Remove first 3 bits 110xxxxx
-		                    a <<= 6;        // Shift left 6 for next byte
+		                    flag = 1;                                 // Skip next byte
+		                    a &= 0x1F;                                // Remove first 3 bits 110xxxxx
+		                    a <<= 6;                                  // Shift left 6 for next byte
 		                    a |= ((line[i+1]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-							// TODO: ADD NEWLINE TO UTF MAP
+							utf_string[utf_index] = a;
+                            utf_index++;
 		                }
-		                
+
 		                // For Range U+0800 = U+FFFF
 		                else if ((a&0xF0) == 0xE0){
-		                    flag = 2;       // Skip next two bytes
-		                    a &= 0x0F;      // Remove first 4 bits 1110xxxx
-		                    a <<= 6;        // Shift left 6 for next byte
+		                    flag = 2;                                 // Skip next two bytes
+		                    a &= 0x0F;                                // Remove first 4 bits 1110xxxx
+		                    a <<= 6;                                  // Shift left 6 for next byte
 		                    a |= ((line[i+1]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-		                    a <<= 6;        // Shift left 6 for next byte
+		                    a <<= 6;                                  // Shift left 6 for next byte
 		                    a |= ((line[i+2]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-							// TODO: ADD NEWLINE TO UTF MAP
+							utf_string[utf_index] = a;
+                            utf_index++;
 		                }
 		                
 		                // For Range U+10000 - U+1FFFFF
 		                else if ((a&0xF8) == 0xF0){
-		                    flag = 3;       // Skip next three bytes
-		                    a &= 0x07;      // Remove first five bits 11110xxx
-		                    a <<= 6;        // Shift left 6 for next byte
+		                    flag = 3;                                 // Skip next three bytes
+		                    a &= 0x07;                                // Remove first five bits 11110xxx
+		                    a <<= 6;                                  // Shift left 6 for next byte
 		                    a |= ((line[i+1]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-		                    a <<= 6;        // Shift left 6 for next byte
+		                    a <<= 6;                                  // Shift left 6 for next byte
 		                    a |= ((line[i+2]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-		                    a <<= 6;        // Shift left 6 for next byte
+		                    a <<= 6;                                  // Shift left 6 for next byte
 		                    a |= ((line[i+3]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-							// TODO: ADD NEWLINE TO UTF MAP
+							utf_string[utf_index] = a;
+                            utf_index++;
 		                }
 		                
 		                if ( utf_char_prop.find(a) != utf_char_prop.end()){   // If that number is in list of properties
-		                    std::string key = utf_char_prop.at(a);           		// Get property of the Unicode character (like Lu or Cc)
-		                    prop_counts.at(key) += 1;           			 	// Increment counter for that property
+		                    std::string key = utf_char_prop.at(a);            // Get property of the Unicode character (like Lu or Cc)
+		                    prop_counts.at(key) += 1;           			  // Increment counter for that property
 		                }
 		            }
-					utf_size++;
 		            i++;    // Increment Index Counter
 		        }
 			}
@@ -171,11 +175,11 @@ class U {
 		}
 		
 		// return size (stored per data object in private vars)
-		int size() { return utf_size; }
-
-		std::string get(){return utf_string;}
-		std::string get(int index){return utf_string;}
-		std::string get(int start, int end){return utf_string;}
+		int size() { return utf_index - 1; }  // -1 because utf_index is already incremented for the next value;
+    
+		std::string get(){return "";}
+		std::string get(int index){return utf_string[index];}
+		std::string get(int start, int end){return "";}
 		
 		// Loops through all property counts until it finds the method
 		// 	parameter or hits the end of the map.
@@ -190,13 +194,13 @@ class U {
 
 	private:
 		std::string properties_file;
-		std::string utf_string;
-		int utf_size;
+        std::string literal;
 		std::set<std::string> propNames;
 		std::vector<std::string> utf_chars;
 		std::map<int, std::string> utf_char_prop;
 		std::map<std::string, int> prop_counts;
 		std::map<int, std::string> utf_string;
+        int utf_index;
 		void clear_properties(){
 			propNames.clear();
 			utf_char_prop.clear();
