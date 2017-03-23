@@ -23,7 +23,8 @@ class U {
 		// Default Constructor -- Accumulated String (utf_string) is empty.
 		U(){
 			utf_string = "";
-			properties_file = "";		
+			properties_file = "";	
+			utf_size = 0;	
 		}	
 		
 		// Copy Constructor -- Copy an existing U object to a new object of type: U.
@@ -34,7 +35,8 @@ class U {
 		// Test Constructor -- Take a property file and literal string.
 		U(std::string p, std::string u) : properties_file(p), utf_string(u){
 			propfile(properties_file);	
-			readfile(utf_string);	
+			readfile(utf_string);
+			utf_size = 0;	
 		}
 
 		// Assignment Operator
@@ -54,16 +56,16 @@ class U {
 			std::string line = "";			
 			if (!readfile.is_open())
 				throw std::string("File could not be opened!");
+			
 			while(std::getline(readfile, line)){
 				if ( utf_char_prop.find('\n') != utf_char_prop.end() && !readfile.eof()){
                		std::string key = utf_char_prop.at('\n');
                 	prop_counts.at(key) += 1;
-					utf_string += '\n';
+					// TODO: ADD NEWLINE TO UTF MAP
             	}
 				           int i = 0;
 		        int flag = 0;
 		        for ( char c : line ){
-					utf_string += c;
 		            if (flag > 0){
 		                // If the next bit doesn't begin with 10xxxxxx error out
 		                if ( ((c&0x000000FF)&0xC0) != 0x80){
@@ -74,12 +76,12 @@ class U {
 		                i++;        // incrememnt current index of tempString
 		                continue;   // skip byte (already been read) 
 		            }
-		            
 		            // For Range U+0000 - U+007F
 		            if (c >= 0x0000 && c <= 0x007F){
 		                if ( utf_char_prop.find(c) != utf_char_prop.end()){ 	// If that number is in list of properties
 		                    std::string key = utf_char_prop.at(c);       		// Get property of the Unicode character (like Lu or Cc)
 		                    prop_counts.at(key) += 1;        					// Increment counter for that property
+							// TODO: ADD NEWLINE TO UTF MAP
 		                }
 		            }else{
 		                // Convert to unsigned int
@@ -91,7 +93,7 @@ class U {
 		                    a &= 0x1F;      // Remove first 3 bits 110xxxxx
 		                    a <<= 6;        // Shift left 6 for next byte
 		                    a |= ((line[i+1]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-		                    //cout << hex << a << endl;
+							// TODO: ADD NEWLINE TO UTF MAP
 		                }
 		                
 		                // For Range U+0800 = U+FFFF
@@ -102,7 +104,7 @@ class U {
 		                    a |= ((line[i+1]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
 		                    a <<= 6;        // Shift left 6 for next byte
 		                    a |= ((line[i+2]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-		                    //cout << hex << a << endl;
+							// TODO: ADD NEWLINE TO UTF MAP
 		                }
 		                
 		                // For Range U+10000 - U+1FFFFF
@@ -115,7 +117,7 @@ class U {
 		                    a |= ((line[i+2]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
 		                    a <<= 6;        // Shift left 6 for next byte
 		                    a |= ((line[i+3]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-		                    //cout << hex << a << endl; 
+							// TODO: ADD NEWLINE TO UTF MAP
 		                }
 		                
 		                if ( utf_char_prop.find(a) != utf_char_prop.end()){   // If that number is in list of properties
@@ -127,7 +129,6 @@ class U {
 		            i++;    // Increment Index Counter
 		        }
 			}
-			std::cout << utf_string << std::endl;
 		}
 
 		// Parse Properties file -- 
@@ -195,14 +196,12 @@ class U {
 		std::vector<std::string> utf_chars;
 		std::map<int, std::string> utf_char_prop;
 		std::map<std::string, int> prop_counts;
+		std::map<int, std::string> utf_string;
 		void clear_properties(){
 			propNames.clear();
 			utf_char_prop.clear();
 			utf_chars.clear();
 		}		
-		void parse_utf(std::string line){
-			
-		}	
 };
 
 #endif

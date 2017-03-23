@@ -14,12 +14,10 @@ int main(int argc, char* argv[]){
 		U assignment_ctor_test;
 		assignment_ctor_test = test;
 		U copy_ctor_test(test);
-		for ( auto a : test.props()){
-			cout << a << ": " << test.propcount(a) << endl;	
-		}
-		cout << test.propcount("Sm") << endl;
-		cout << test.size() << endl;
-		cout << test.get(1) << endl;
+
+		cout << "Number of Lu: " << test.propcount("Lu") << endl;
+		cout << "Size: " << test.size() << endl;
+		cout << "At index 1: " << test.get(1) << endl;
 	}catch (const string error){
 		cout << error << endl;
 	}
