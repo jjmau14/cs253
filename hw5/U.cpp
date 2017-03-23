@@ -15,7 +15,7 @@ int main(int argc, char* argv[]){
 		test.readfile(argv[2]);
 		cout << "Number of Lu: " << test.propcount("Lu") << endl;
 		cout << "Size: " << test.size() << endl;
-		cout << "At index 9: " << test.get(8) << endl;
+		cout << "At index 9: " << test.get(9) << endl;
 	}catch (const string error){
 		cout << error << endl;
 	}
