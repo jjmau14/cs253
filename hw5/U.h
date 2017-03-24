@@ -23,7 +23,6 @@ class U {
 		// Default Constructor -- Accumulated String (utf_string) is empty.
 		U(){
 			properties_file = "";
-			utf_index = 0;	
 		}	
 		
 		// Copy Constructor -- Copy an existing U object to a new object of type: U.
@@ -32,10 +31,9 @@ class U {
 		}
 
 		// Test Constructor -- Take a property file and literal string.
-		U(std::string p, std::string u) : properties_file(p), literal(u){
-			propfile(properties_file);	
-            read_string(literal);
-			utf_index = 0;	
+		U(std::string p, std::string u) : properties_file(p), string_literal(u){
+            propfile(properties_file);	
+            read_string(string_literal);
 		}
 
 		// Assignment Operator
@@ -50,8 +48,7 @@ class U {
 
 		// Methods of Class 'U' --------------------------------
 		void readfile(std::string fileName){
-			std::ifstream readfile;
-			readfile.open(fileName);
+			std::ifstream readfile(fileName);
 			std::string line = "";			
 			
             if (!readfile)
@@ -88,7 +85,7 @@ class U {
                     if ( utf_char_prop.find(c) != utf_char_prop.end()){ 	// If that number is in list of properties
                         std::string key = utf_char_prop.at(c);       		// Get property of the Unicode character (like Lu or Cc)
                         prop_counts.at(key) += 1;        					// Increment counter for that property
-                        utf_string[utf_index] = line[i];
+                        utf_string[utf_index] = c;
                         utf_index++;
                     }
                 }else{
@@ -101,7 +98,8 @@ class U {
                         a &= 0x1F;                                // Remove first 3 bits 110xxxxx
                         a <<= 6;                                  // Shift left 6 for next byte
                         a |= ((line[i+1]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-                        utf_string[utf_index] = line[i] + line[i+1];
+                        char temp = ((line[i]<<8)|(line[i+1]));
+                        utf_string[utf_index] = temp;
                         utf_index++;
                     }
                     // For Range U+0800 = U+FFFF
@@ -112,7 +110,8 @@ class U {
                         a |= ((line[i+1]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
                         a <<= 6;                                  // Shift left 6 for next byte
                         a |= ((line[i+2]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-                        utf_string[utf_index] = line[i] + line[i+1] + line[i+2];
+                        char temp = ((line[i]<<16)|(line[i+1]<<8)|(line[i+2]));
+                        utf_string[utf_index] = temp;
                         utf_index++;
                     }
                     
@@ -126,7 +125,8 @@ class U {
                         a |= ((line[i+2]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
                         a <<= 6;                                  // Shift left 6 for next byte
                         a |= ((line[i+3]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-                        utf_string[utf_index] = line[i] + line[i+1] + line[i+2] + line[i+3];
+                        char temp = ((line[i]<<24)|(line[i+1]<<16)|(line[i+2]<<8)|(line[i+3]));
+                        utf_string[utf_index] = temp;
                         utf_index++;
                     }
                     
@@ -142,8 +142,7 @@ class U {
 		// Parse Properties file -- 
 		void propfile(std::string fileName){
 			clear_properties();			// if propfile is called more than once, clear existing data
-			std::ifstream propfile;
-			propfile.open(fileName);	// open property file
+			std::ifstream propfile(fileName);	// open property file
 			std::string line = "";
 			if (!propfile)	// throw error if could not open property file
 				throw std::string("Properties file \"" + fileName + "\" could not be opened!");
@@ -179,11 +178,26 @@ class U {
 		}
 		
 		// return size (stored per data object in private vars)
-		int size() { return utf_index - 1; }  // -1 because utf_index is already incremented for the next value;
+		int size() { 
+            return utf_index;
+        }
     
-		std::string get(){return "";}
-		std::string get(int index){return utf_string[index];}
-		std::string get(int start, int end){return "";}
+		std::string get(){
+            std::string accum_string = "";
+            for (int i = 0 ; i <= size() ; i++){
+                accum_string += get(i);
+            }
+            return accum_string;
+        }
+		std::string get(int index){
+            return utf_string[index];
+        }
+		std::string get(int start, int end){
+            std::string interval_string = "";
+            for (int i = start ; i < end ; i++)
+                interval_string += get(i);
+            return interval_string;
+        }
 		
 		// Loops through all property counts until it finds the method
 		// 	parameter or hits the end of the map.
@@ -197,14 +211,14 @@ class U {
 		std::set<std::string> props() const {return propNames;}
 
 	private:
-		std::string properties_file;
-        std::string literal;
+		std::string properties_file= "";
+        std::string string_literal = "";
 		std::set<std::string> propNames;
 		std::vector<std::string> utf_chars;
 		std::map<int, std::string> utf_char_prop;
 		std::map<std::string, int> prop_counts;
 		std::map<int, std::string> utf_string;
-        int utf_index;
+        int utf_index = 0;
 		void clear_properties(){
 			propNames.clear();
 			utf_char_prop.clear();
