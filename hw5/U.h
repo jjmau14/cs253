@@ -55,14 +55,13 @@ class U {
 				throw std::string("File \"" + fileName + "\" could not be opened!");
 			
 			while(std::getline(readfile, line)){
-				if ( utf_char_prop.find('\n') != utf_char_prop.end() && !readfile.eof()){
+                read_string(line);
+                if ( utf_char_prop.find('\n') != utf_char_prop.end() && !readfile.eof()){
                     std::string key = utf_char_prop.at('\n');
                     prop_counts.at(key) += 1;
-                    
                     utf_string[utf_index] = "\n";
                     utf_index++;
                 }
-                read_string(line);
             }
         }
         
@@ -80,6 +79,7 @@ class U {
                     i++;        // incrememnt current index of tempString
                     continue;   // skip byte (already been read) 
                 }
+                
                 // For Range U+0000 - U+007F
                 if (c >= 0x0000 && c <= 0x007F){
                     if ( utf_char_prop.find(c) != utf_char_prop.end()){ 	// If that number is in list of properties
@@ -98,8 +98,9 @@ class U {
                         a &= 0x1F;                                // Remove first 3 bits 110xxxxx
                         a <<= 6;                                  // Shift left 6 for next byte
                         a |= ((line[i+1]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-                        char temp = ((line[i]<<8)|(line[i+1]));
-                        utf_string[utf_index] = temp;
+                        std::stringstream s;
+                        s << std::hex << a;
+                        utf_string[utf_index] = s.str();
                         utf_index++;
                     }
                     // For Range U+0800 = U+FFFF
@@ -110,8 +111,9 @@ class U {
                         a |= ((line[i+1]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
                         a <<= 6;                                  // Shift left 6 for next byte
                         a |= ((line[i+2]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-                        char temp = ((line[i]<<16)|(line[i+1]<<8)|(line[i+2]));
-                        utf_string[utf_index] = temp;
+                        std::stringstream s;
+                        s << std::hex << a;
+                        utf_string[utf_index] = s.str();
                         utf_index++;
                     }
                     
@@ -125,8 +127,9 @@ class U {
                         a |= ((line[i+2]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
                         a <<= 6;                                  // Shift left 6 for next byte
                         a |= ((line[i+3]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-                        char temp = ((line[i]<<24)|(line[i+1]<<16)|(line[i+2]<<8)|(line[i+3]));
-                        utf_string[utf_index] = temp;
+                        std::stringstream s;
+                        s << std::hex << a;
+                        utf_string[utf_index] = s.str();
                         utf_index++;
                     }
                     
