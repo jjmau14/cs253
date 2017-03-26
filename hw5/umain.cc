@@ -4,11 +4,14 @@
 
 #include <iostream>
 #include <cstring>
-#include "U.h"
+#include "U.cc"
 
 using namespace std;
 
 int main(int argc, char* argv[]){
+    if (argc != 3)
+        cout << "USAGE: ./a.out [Properties File] [Data file]" << endl;
+    else{
 	try {
 		U test;
                 test.propfile(argv[1]);
@@ -19,4 +22,5 @@ int main(int argc, char* argv[]){
 	}catch (const string error){
 		cout << error << endl;
 	}
+    }
 }
