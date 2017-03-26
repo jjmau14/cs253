@@ -4,7 +4,6 @@
 //		Read and categorize UTF-8 characters
 // 		from multiple files.
 
-#include <string>
 #include <vector>
 #include <set>
 #include <map>
@@ -22,8 +21,10 @@ U::U(){
 }	
 
 // Copy Constructor -- Copy an existing U object to a new object of type: U.
-U::U(const U &rhs) : properties_file(rhs.properties_file), utf_string(rhs.utf_string){
-			// Nothing left to do
+U::U(const U &rhs) : properties_file(rhs.properties_file), string_literal(rhs.string_literal), propNames(rhs.propNames),
+    utf_chars(rhs.utf_chars), utf_char_prop(rhs.utf_char_prop), prop_counts(rhs.prop_counts), utf_string(rhs.utf_string),
+    utf_index(rhs.utf_index){
+    // Nothing left to do...
 }
 // Test Constructor -- Take a property file and literal string.
 U::U(std::string p, std::string u) : properties_file(p), string_literal(u){
@@ -34,7 +35,13 @@ U::U(std::string p, std::string u) : properties_file(p), string_literal(u){
 // Assignment Operator
 U &U::operator=(const U &rhs) {
     properties_file = rhs.properties_file;
+    string_literal = rhs.string_literal;
+    propNames = rhs.propNames;
+    utf_chars = rhs.utf_chars;
+	utf_char_prop = rhs.utf_char_prop;
+	prop_counts = rhs.prop_counts;
     utf_string = rhs.utf_string;
+    utf_index = rhs.utf_index;
     return *this;
 }
 
@@ -192,6 +199,7 @@ std::string U::get(){
     }
     return accum_string;
 }
+
 std::string U::get(int index){
     std::stringstream s;
     s << utf_string[index];
