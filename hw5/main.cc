@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include <cstring>
-#include "U.cc"
+#include "U.h"
 
 using namespace std;
 

@@ -1,8 +1,6 @@
 // Josh Mau
 // Mar 16, 2017
-// U.h -- Header file for Object Oriented
-//		Read and categorize UTF-8 characters
-// 		from multiple files.
+// U.cc -- Implementation of U.h methods
 
 #include <vector>
 #include <set>

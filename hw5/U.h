@@ -64,7 +64,7 @@ class U {
 		std::vector<std::string> utf_chars;
 		std::map<int, std::string> utf_char_prop;
 		std::map<std::string, int> prop_counts;
-		std::map<int, int> utf_string;
+		std::map<int, char> utf_string;
         int utf_index;
 		void clear_properties();	
         
