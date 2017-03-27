@@ -47,7 +47,7 @@ U &U::operator=(const U &rhs) {
 U::~U(){}
 
 // Methods of Class 'U' --------------------------------
-void U::readfile(std::string fileName){
+void U::readfile(const std::string fileName){
     std::ifstream readfile(fileName);
     std::string line = "";			
     
@@ -142,7 +142,7 @@ void U::read_string(const std::string line){
 }
 
 // Parse Properties file -- 
-void U::propfile(std::string fileName){
+void U::propfile(const std::string fileName){
     clear_properties();			// if propfile is called more than once, clear existing data
     std::ifstream propfile(fileName);	// open property file
     std::string line = "";
@@ -185,7 +185,7 @@ void U::propfile(std::string fileName){
 }
 		
 // return size (stored per data object in private vars)
-int U::size() { 
+int U::size() const{ 
     return utf_index;
 }
 
@@ -197,14 +197,14 @@ std::string U::get(){
     return accum_string;
 }
 
-std::string U::get(int index){
+std::string U::get(const int index){
     string str;
     for (auto x : utf_string[index])
         str += x;
     return str;
 }
 
-std::string U::get(int start, int end){
+std::string U::get(const int start, const int end){
     if (start >= end)
         throw string("Invalid half-open interval!");
 

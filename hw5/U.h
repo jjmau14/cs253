@@ -35,20 +35,20 @@ class U {
 		~U();
 
 		// Methods of Class 'U' --------------------------------
-		void readfile(std::string);
+		void readfile(const std::string);
         
         // Parse std::string into utf characters...
         void read_string(const std::string); 
 
 		// Parse Properties file -- 
-		void propfile(std::string);
+		void propfile(const std::string);
 		
 		// return size (stored per data object in private vars)
-		int size();
+		int size() const;
     
 		std::string get();
-		std::string get(int);
-		std::string get(int, int);
+		std::string get(const int);
+		std::string get(const int, const int);
 		
 		// Loops through all property counts until it finds the method
 		// parameter or hits the end of the map.
