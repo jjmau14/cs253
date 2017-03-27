@@ -28,11 +28,10 @@ int main(int argc, char* argv[]){
 		cout << "At index 9: " << copy_test.get(4,copy_test.size()) << endl;
 
                 
-                U assign;
-                assign = test;
+                const U assign = test;
                 cout << "Number of Lu: " << copy_test.propcount("Lu") << endl;
 		cout << "Size: " << copy_test.size() << endl;
-		cout << "At index 9: " << copy_test.get(4,copy_test.size()) << endl;
+		cout << "At index 8: " << copy_test.get(8) << endl;
 
 	}catch (const string error){
 		cout << error << endl;
