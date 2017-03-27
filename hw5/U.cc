@@ -71,10 +71,10 @@ void U::read_string(const std::string line){
     for ( char c : line ){
         if (flag > 0){
             // If the next bit doesn't begin with 10xxxxxx error out
-            if ( ((c&0x000000FF)&0xC0) != 0x80)
+            if ( ((c&0x000000FF)&0xC0) != 0x80){
                 throw std::string("Error in byte");
-
-                flag--;     // decrement flag
+            }
+            flag--;     // decrement flag
             i++;        // incrememnt current index of tempString
             continue;   // skip byte (already been read) 
         }
