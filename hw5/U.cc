@@ -59,7 +59,7 @@ void U::readfile(std::string fileName){
         if ( utf_char_prop.find('\n') != utf_char_prop.end() && !readfile.eof()){
             std::string key = utf_char_prop.at('\n');
             prop_counts.at(key) += 1;
-            utf_string[utf_index] = '\n';
+            utf_string[utf_index].push_back('\n');
             utf_index++;
         }
     }
@@ -85,7 +85,7 @@ void U::read_string(const std::string line){
             if ( utf_char_prop.find(c) != utf_char_prop.end()){ 	// If that number is in list of properties
                     std::string key = utf_char_prop.at(c);       		// Get property of the Unicode character (like Lu or Cc)
                     prop_counts.at(key) += 1;        					// Increment counter for that property
-                    utf_string[utf_index] = c;
+                    utf_string[utf_index].push_back(line[i]);
                     utf_index++;
                 }
             }else{
@@ -98,9 +98,8 @@ void U::read_string(const std::string line){
                 a &= 0x1F;                                // Remove first 3 bits 110xxxxx
                 a <<= 6;                                  // Shift left 6 for next byte
                 a |= ((line[i+1]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-                std::stringstream s;
-                s << std::hex << a;
-                utf_string[utf_index] = a;
+                utf_string[utf_index].push_back(line[i]);
+                utf_string[utf_index].push_back(line[i+1]);
                 utf_index++;
             }
             // For Range U+0800 = U+FFFF
@@ -111,9 +110,9 @@ void U::read_string(const std::string line){
                 a |= ((line[i+1]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
                 a <<= 6;                                  // Shift left 6 for next byte
                 a |= ((line[i+2]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-                std::stringstream s;
-                s << std::hex << a;
-                utf_string[utf_index] = a;
+                utf_string[utf_index].push_back(line[i]);
+                utf_string[utf_index].push_back(line[i+1]);
+                utf_string[utf_index].push_back(line[i+2]);
                 utf_index++;
             }
             
@@ -126,10 +125,10 @@ void U::read_string(const std::string line){
                 a <<= 6;                                  // Shift left 6 for next byte
                 a |= ((line[i+2]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
                 a <<= 6;                                  // Shift left 6 for next byte
-                a |= ((line[i+3]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-                std::stringstream s;
-                s << std::hex << a;
-                utf_string[utf_index] = a;
+                utf_string[utf_index].push_back(line[i]);
+                utf_string[utf_index].push_back(line[i+1]);
+                utf_string[utf_index].push_back(line[i+2]);
+                utf_string[utf_index].push_back(line[i+3]);
                 utf_index++;
             }
             
@@ -199,12 +198,16 @@ std::string U::get(){
 }
 
 std::string U::get(int index){
-    std::stringstream s;
-    s << utf_string[index];
-    return s.str();
+    string str;
+    for (auto x : utf_string[index])
+        str += x;
+    return str;
 }
 
 std::string U::get(int start, int end){
+    if (start >= end)
+        throw string("Invalid half-open interval!");
+
     std::string interval_string = "";
     for (int i = start ; i < end ; i++)
         interval_string += get(i);
