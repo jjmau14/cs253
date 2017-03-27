@@ -59,13 +59,13 @@ class U {
         
         // Public Variables
 		std::string properties_file;
-        std::string string_literal;
+                std::string string_literal;
 		std::set<std::string> propNames;
 		std::vector<std::string> utf_chars;
 		std::map<int, std::string> utf_char_prop;
 		std::map<std::string, int> prop_counts;
 		std::map<int, std::vector<int>> utf_string;
-        int utf_index;
+                int utf_index = 0;
 		void clear_properties();	
         
     private:
