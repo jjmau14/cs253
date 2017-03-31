@@ -1,72 +1,63 @@
 // Josh Mau
 // Mar 16, 2017
-// U.h -- Header file for Object Oriented
+// P.h -- Header file for Object Oriented
 //		Read and categorize UTF-8 characters
 // 		from multiple files.
 
-#ifndef U_H_INCLUDED
-#define U_H_INCLUDED
+#ifndef P_H_INCLUDED
+#define P_H_INCLUDED
 
 #include <string>
 #include <vector>
 #include <set>
 #include <map>
 
-class U {
+class P {
 	public:
 		// Constructors and Destructor -------------------------
 
 		// Default Constructor -- Accumulated String (utf_string) is empty.
                 // No properties file passed (yet).
-		U();
+		P();
             
 		// Copy Constructor -- Copy an existing U object to a new object of type: U.
-		U(const U &);
+		P(const P &);
 
-		// Test Constructor -- Take a property file and literal string.
-        // Requires properties filename as first arg, and literal string
-        // As second arg.
-		U(std::string, std::string);
+		// Test Constructor
+		P(std::string);
 
 		// Assignment Operator
-		U &operator=(const U &);
+		P &operator=(const P &);
 	       
 		// Destructor -- No dynamic data
-		~U();
+		~P();
 
-		// Methods of Class 'U' --------------------------------
+		// Methods of Class 'P' --------------------------------
 		void readfile(const std::string);
         
-        // Parse std::string into utf characters...
-        void read_string(const std::string); 
-
-		// Parse Properties file -- 
-		void propfile(const std::string);
-		
-		// return size (stored per data object in private vars)
-		int size() const;
-    
-		std::string get();
-		std::string get(const int);
-		std::string get(const int, const int);
-		
+        // Returns reference to the set of all property names
+		std::set<std::string> props() const;
+ 
+        int count(int codepoint) const;
+        
 		// Loops through all property counts until it finds the method
 		// parameter or hits the end of the map.
-		int propcount(std::string) const ;
+		int count(std::string) const;
+               
+		// return size (stored per data object in private vars)
+		int size() const;
         
-		// Returns reference to the set of all property names
-		std::set<std::string> props() const;
+        bool empty() const;
+        
+        void clear();
+        
+        void clear_properties();
         
         // Public Variables
-		std::string properties_file;
-                std::string string_literal;
-		std::set<std::string> propNames;
-		std::vector<std::string> utf_chars;
-		std::map<int, std::string> utf_char_prop;
-		std::map<std::string, int> prop_counts;
-		std::map<int, std::vector<int>> utf_string;
-                int utf_index = 0;
-		void clear_properties();	
+		std::string properties_file_name;
+		std::set<std::string> unique_properties;
+		std::map<int, std::string> hex_to_property;
+		std::map<std::string, int> property_counts;
         
     private:
         // Nothing for now...

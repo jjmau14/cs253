@@ -1,6 +1,6 @@
 // Josh Mau
 // Mar 16, 2017
-// U.cc -- Implementation of U.h methods
+// P.cc -- Implementation of U.h methods
 
 #include <vector>
 #include <set>
@@ -9,140 +9,40 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
-#include "U.h"
+#include "P.h"
 
 using namespace std;
 
 // Default Constructor -- Accumulated String (utf_string) is empty.
-U::U(){
-    properties_file = "";
+P::P(){
+    properties_file_name = "";
 }	
 
 // Copy Constructor -- Copy an existing U object to a new object of type: U.
-U::U(const U &rhs) : properties_file(rhs.properties_file), string_literal(rhs.string_literal), propNames(rhs.propNames),
-    utf_chars(rhs.utf_chars), utf_char_prop(rhs.utf_char_prop), prop_counts(rhs.prop_counts), utf_string(rhs.utf_string),
-    utf_index(rhs.utf_index){
+P::P(const P &rhs) : properties_file_name(rhs.properties_file_name), unique_properties(rhs.unique_properties),
+    hex_to_property(rhs.hex_to_property), property_counts(rhs.property_counts){
     // Nothing left to do...
 }
 // Test Constructor -- Take a property file and literal string.
-U::U(std::string p, std::string u) : properties_file(p), string_literal(u){
-    propfile(properties_file);	
-    read_string(string_literal);
+P::P(std::string p) : properties_file_name(p){
+    readfile(properties_file_name);
 }
 
 // Assignment Operator
-U &U::operator=(const U &rhs) {
-    properties_file = rhs.properties_file;
-    string_literal = rhs.string_literal;
-    propNames = rhs.propNames;
-    utf_chars = rhs.utf_chars;
-	utf_char_prop = rhs.utf_char_prop;
-	prop_counts = rhs.prop_counts;
-    utf_string = rhs.utf_string;
-    utf_index = rhs.utf_index;
+P &P::operator=(const P &rhs) {
+    properties_file_name = rhs.properties_file_name;
+    unique_properties = rhs.unique_properties;
+    hex_to_property = rhs.hex_to_property;
+    property_counts = rhs.property_counts;
     return *this;
 }
 
 // Destructor -- No dynamic data
-U::~U(){}
+P::~P(){}
 
-// Methods of Class 'U' --------------------------------
-void U::readfile(const std::string fileName){
-    std::ifstream readfile(fileName);
-    std::string line = "";			
-    
-    if (!readfile)
-        throw std::string("File \"" + fileName + "\" could not be opened!");
-    
-    while(std::getline(readfile, line)){
-        read_string(line);
-        if ( utf_char_prop.find('\n') != utf_char_prop.end() && !readfile.eof()){
-            std::string key = utf_char_prop.at('\n');
-            prop_counts.at(key) += 1;
-            utf_string[utf_index].push_back('\n');
-            utf_index++;
-        }
-    }
-}
-        
-void U::read_string(const std::string line){
-    int i = 0;
-    int flag = 0;
-    for ( char c : line ){
-        if (flag > 0){
-            // If the next bit doesn't begin with 10xxxxxx error out
-            if ( ((c&0x000000FF)&0xC0) != 0x80){
-                throw std::string("Error in byte");
-            }
-            flag--;     // decrement flag
-            i++;        // incrememnt current index of tempString
-            continue;   // skip byte (already been read) 
-        }
-        
-        // For Range U+0000 - U+007F
-        if (c >= 0x0000 && c <= 0x007F){
-            if ( utf_char_prop.find(c) != utf_char_prop.end()){ 	// If that number is in list of properties
-                    std::string key = utf_char_prop.at(c);       		// Get property of the Unicode character (like Lu or Cc)
-                    prop_counts.at(key) += 1;        					// Increment counter for that property
-                    utf_string[utf_index].push_back(line[i]);
-                    utf_index++;
-                }
-            }else{
-            // Convert to unsigned int
-            unsigned int a = (c&0x000000FF);
-            
-            // For Range U+0080 - U+07FF
-            if ((a&0xE0) == 0xC0){
-                flag = 1;                                 // Skip next byte
-                a &= 0x1F;                                // Remove first 3 bits 110xxxxx
-                a <<= 6;                                  // Shift left 6 for next byte
-                a |= ((line[i+1]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-                utf_string[utf_index].push_back(line[i]);
-                utf_string[utf_index].push_back(line[i+1]);
-                utf_index++;
-            }
-            // For Range U+0800 = U+FFFF
-            else if ((a&0xF0) == 0xE0){
-                flag = 2;                                 // Skip next two bytes
-                a &= 0x0F;                                // Remove first 4 bits 1110xxxx
-                a <<= 6;                                  // Shift left 6 for next byte
-                a |= ((line[i+1]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-                a <<= 6;                                  // Shift left 6 for next byte
-                a |= ((line[i+2]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-                utf_string[utf_index].push_back(line[i]);
-                utf_string[utf_index].push_back(line[i+1]);
-                utf_string[utf_index].push_back(line[i+2]);
-                utf_index++;
-            }
-            
-            // For Range U+10000 - U+1FFFFF
-            else if ((a&0xF8) == 0xF0){
-                flag = 3;                                 // Skip next three bytes
-                a &= 0x07;                                // Remove first five bits 11110xxx
-                a <<= 6;                                  // Shift left 6 for next byte
-                a |= ((line[i+1]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-                a <<= 6;                                  // Shift left 6 for next byte
-                a |= ((line[i+2]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
-                a <<= 6;                                  // Shift left 6 for next byte
-                utf_string[utf_index].push_back(line[i]);
-                utf_string[utf_index].push_back(line[i+1]);
-                utf_string[utf_index].push_back(line[i+2]);
-                utf_string[utf_index].push_back(line[i+3]);
-                utf_index++;
-            }
-            
-            if ( utf_char_prop.find(a) != utf_char_prop.end()){   // If that number is in list of properties
-                std::string key = utf_char_prop.at(a);            // Get property of the Unicode character (like Lu or Cc)
-                prop_counts.at(key) += 1;           			  // Increment counter for that property
-            }
-        }
-        i++;    // Increment Index Counter
-    }
-}
-
-// Parse Properties file -- 
-void U::propfile(const std::string fileName){
-    clear_properties();			// if propfile is called more than once, clear existing data
+// Methods of Class 'P' --------------------------------
+void P::readfile(const std::string fileName){
+    clear_properties();
     std::ifstream propfile(fileName);	// open property file
     std::string line = "";
     if (!propfile)	// throw error if could not open property file
@@ -173,62 +73,38 @@ void U::propfile(const std::string fileName){
                 break;
         }
         
-        utf_char_prop[hex_value] = temp_string;		// Maps hex code to a property value (ie. 0x0065 mapped to Lu -- 'A')
-        propNames.insert(temp_string);				// Adds property names to set (not multiset. aka add unique names only)
+        hex_to_property[hex_value] = temp_string;		// Maps hex code to a property value (ie. 0x0065 mapped to Lu -- 'A')
+        unique_properties.insert(temp_string);				// Adds property names to set (not multiset. aka add unique names only)
     }	
 
-    for (auto property_name : propNames)
-        prop_counts[property_name] = 0;					// Init all properties to count of 0
+    for (auto property_name : unique_properties)
+        property_counts[property_name] = 0;					// Init all properties to count of 0
         
-    propfile.close();		// Close property file
-}
-		
-// return size (stored per data object in private vars)
-int U::size() const{ 
-    return utf_index;
+    propfile.close();
 }
 
-std::string U::get(){
-    std::string accum_string = "";
-    for (int i = 0 ; i <= size() ; i++){
-        accum_string += get(i);
-    }
-    return accum_string;
-}
-
-std::string U::get(const int index){
-    if (index >= utf_index)
-        throw string("Index out of bounds!");
-    string str;
-    for (auto x : utf_string[index])
-        str += x;
-    return str;
-}
-
-std::string U::get(const int start, const int end){
-    if (start >= end)
-        throw string("Invalid half-open interval!");
-
-    std::string interval_string = "";
-    for (int i = start ; i < end ; i++)
-        interval_string += get(i);
-    return interval_string;
-}
-            
+// Returns set of all property names
+std::set<std::string> P::props() const {return unique_properties;}
             
 // Loops through all property counts until it finds the method
 // 	parameter or hits the end of the map.
-int U::propcount(std::string property) const {
-    if (prop_counts.find(property) != prop_counts.end())	// if passed prop name == current item in map
-        return prop_counts.find(property)->second;			// return that property->second (first = name; second = count)
+int P::count(std::string property) const {
+    if (property_counts.find(property) != property_counts.end())	// if passed prop name == current item in map
+        return property_counts.find(property)->second;			// return that property->second (first = name; second = count)
     return 0;												// else not found (aka return 0)
 }
-    
-// Returns set of all property names
-std::set<std::string> U::props() const {return propNames;}
 
-void U::clear_properties(){
-    propNames.clear();
-    utf_char_prop.clear();
-    prop_counts.clear();
+int P::count(int codepoint) const {
+    return 0; // TODO: implement
+}
+    
+// return size (stored per data object in private vars)
+int P::size() const{ 
+    return unique_properties.size();
+}
+
+void P::clear_properties(){
+    unique_properties.clear();
+    hex_to_property.clear();
+    property_counts.clear();
 }		
