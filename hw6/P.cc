@@ -94,8 +94,9 @@ int P::count(std::string property) const {
     return 0;												// else not found (aka return 0)
 }
 
-int P::count(int codepoint) const {
-    return 0; // TODO: implement
+void P::count(int codepoint) {
+    if (hex_to_property.find(codepoint) != hex_to_property.end())
+        property_counts[hex_to_property[codepoint]]++;
 }
     
 // return size (stored per data object in private vars)

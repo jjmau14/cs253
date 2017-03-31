@@ -27,7 +27,7 @@ class P {
 
         std::set<std::string> props() const;  // Returns std::set of unique property names
 
-        int count(int codepoint) const;       // Takes a codepoint and counts number of characters with the same property
+        void count(int codepoint);            // Takes a codepoint and counts it
 		int count(std::string) const;         // Takes a property name and returns the count of that property
                
 		int size() const;                     // Returns number of unique property names

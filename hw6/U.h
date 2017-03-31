@@ -41,6 +41,7 @@ class U {
         // Public Variables
 		std::string utf_file_name;
 		std::map<int, std::vector<int>> utf_string;
+        std::map<int, int> codepoint_map;
         int utf_index = 0;
         
     private:

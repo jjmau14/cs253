@@ -49,10 +49,9 @@ void U::readfile(const std::string fileName){
     
     while(std::getline(readfile, line)){
         read_string(line);
-        if ( utf_char_prop.find('\n') != utf_char_prop.end() && !readfile.eof()){
-            std::string key = utf_char_prop.at('\n');
-            prop_counts.at(key) += 1;
+        if ( !readfile.eof()){
             utf_string[utf_index].push_back('\n');
+            codepoint_map[utf_index] = '\n';
             utf_index++;
         }
     }
@@ -74,13 +73,11 @@ void U::read_string(const std::string line){
         
         // For Range U+0000 - U+007F
         if (c >= 0x0000 && c <= 0x007F){
-            if ( utf_char_prop.find(c) != utf_char_prop.end()){ 	// If that number is in list of properties
-                    std::string key = utf_char_prop.at(c);       		// Get property of the Unicode character (like Lu or Cc)
-                    prop_counts.at(key) += 1;        					// Increment counter for that property
-                    utf_string[utf_index].push_back(line[i]);
-                    utf_index++;
-                }
-            }else{
+            codepoint_map[utf_index] = c;
+            utf_string[utf_index].push_back(line[i]);
+            utf_index++;
+        }else{
+            
             // Convert to unsigned int
             unsigned int a = (c&0x000000FF);
             
@@ -90,6 +87,7 @@ void U::read_string(const std::string line){
                 a &= 0x1F;                                // Remove first 3 bits 110xxxxx
                 a <<= 6;                                  // Shift left 6 for next byte
                 a |= ((line[i+1]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
+                codepoint_map[utf_index] = a;
                 utf_string[utf_index].push_back(line[i]);
                 utf_string[utf_index].push_back(line[i+1]);
                 utf_index++;
@@ -102,6 +100,7 @@ void U::read_string(const std::string line){
                 a |= ((line[i+1]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
                 a <<= 6;                                  // Shift left 6 for next byte
                 a |= ((line[i+2]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
+                codepoint_map[utf_index] = a;
                 utf_string[utf_index].push_back(line[i]);
                 utf_string[utf_index].push_back(line[i+1]);
                 utf_string[utf_index].push_back(line[i+2]);
@@ -117,16 +116,12 @@ void U::read_string(const std::string line){
                 a <<= 6;                                  // Shift left 6 for next byte
                 a |= ((line[i+2]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
                 a <<= 6;                                  // Shift left 6 for next byte
+                codepoint_map[utf_index] = a;
                 utf_string[utf_index].push_back(line[i]);
                 utf_string[utf_index].push_back(line[i+1]);
                 utf_string[utf_index].push_back(line[i+2]);
                 utf_string[utf_index].push_back(line[i+3]);
                 utf_index++;
-            }
-            
-            if ( utf_char_prop.find(a) != utf_char_prop.end()){   // If that number is in list of properties
-                std::string key = utf_char_prop.at(a);            // Get property of the Unicode character (like Lu or Cc)
-                prop_counts.at(key) += 1;           			  // Increment counter for that property
             }
         }
         i++;    // Increment Index Counter
@@ -165,7 +160,7 @@ std::string U::get(const int start, const int end){
 }
             
 int U::codepoint(const int index){
-    return 0; // TODO: Implement
+    return codepoint_map[index];
 }
 
 int U::size() const{ 
