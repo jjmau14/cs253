@@ -108,4 +108,5 @@ void P::clear_properties(){
     unique_properties.clear();
     hex_to_property.clear();
     property_counts.clear();
+	properties_file_name = "";
 }		

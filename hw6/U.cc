@@ -174,5 +174,8 @@ bool U::empty(){
 }
 
 void U::clear(){
-    
+    utf_string.clear();
+	codepoint_map.clear();
+	utf_index = 0;
+	utf_file_name = "";
 }
