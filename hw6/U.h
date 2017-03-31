@@ -15,58 +15,33 @@
 class U {
 	public:
 		// Constructors and Destructor -------------------------
+		U();                      // Default Constructor
+		U(const U &);             // Copy Constructor
+		U(std::string);           // Test Constructor (Takes a string literal)
+		U &operator=(const U &);  // Assignment Operator
 
-		// Default Constructor -- Accumulated String (utf_string) is empty.
-                // No properties file passed (yet).
-		U();
-            
-		// Copy Constructor -- Copy an existing U object to a new object of type: U.
-		U(const U &);
-
-		// Test Constructor -- Take a property file and literal string.
-        // Requires properties filename as first arg, and literal string
-        // As second arg.
-		U(std::string, std::string);
-
-		// Assignment Operator
-		U &operator=(const U &);
-	       
-		// Destructor -- No dynamic data
-		~U();
+		~U();                     // Destructor
 
 		// Methods of Class 'U' --------------------------------
-		void readfile(const std::string);
-        
-        // Parse std::string into utf characters...
-        void read_string(const std::string); 
-
-		// Parse Properties file -- 
-		void propfile(const std::string);
-		
-		// return size (stored per data object in private vars)
-		int size() const;
+		void readfile(const std::string);         // Calls read_string on each line of a file
+        void read_string(const std::string);      // Parses UTF-8 characters from string
+		void append(const std::string);           // Calls read_string for a passed string (append to utf_string)
     
-		std::string get();
-		std::string get(const int);
-		std::string get(const int, const int);
+		std::string get();                        // Returns full utf_string
+		std::string get(const int);               // Returns UTF-8 character at index of utf_string
+		std::string get(const int, const int);    // Returns half open interval of UTF-8 characters
 		
-		// Loops through all property counts until it finds the method
-		// parameter or hits the end of the map.
-		int propcount(std::string) const ;
+        int codepoint(const int);                // Returns the codepoint of the UTF-8 character at index
         
-		// Returns reference to the set of all property names
-		std::set<std::string> props() const;
+		int size() const;                         // Total size of utf_string (utf_index)
+    
+        bool empty();                             // QUESTION: is the utf_string empty?
+        void clear();                             // CAUTION: Clears entire utf_string
         
         // Public Variables
-		std::string properties_file;
-                std::string string_literal;
-		std::set<std::string> propNames;
-		std::vector<std::string> utf_chars;
-		std::map<int, std::string> utf_char_prop;
-		std::map<std::string, int> prop_counts;
+		std::string utf_file_name;
 		std::map<int, std::vector<int>> utf_string;
-                int utf_index = 0;
-		void clear_properties();	
+        int utf_index = 0;
         
     private:
         // Nothing for now...

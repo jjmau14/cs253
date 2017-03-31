@@ -15,43 +15,26 @@
 class P {
 	public:
 		// Constructors and Destructor -------------------------
+		P();                      // Default Constructor
+		P(const P &);             // Copy Constructor
+		P(std::string);           // Test Constructor (Takes properties filename)
+		P &operator=(const P &);  // Assignment Operator
 
-		// Default Constructor -- Accumulated String (utf_string) is empty.
-                // No properties file passed (yet).
-		P();
-            
-		// Copy Constructor -- Copy an existing U object to a new object of type: U.
-		P(const P &);
-
-		// Test Constructor
-		P(std::string);
-
-		// Assignment Operator
-		P &operator=(const P &);
-	       
-		// Destructor -- No dynamic data
-		~P();
+        ~P();                     // Destructor
 
 		// Methods of Class 'P' --------------------------------
-		void readfile(const std::string);
-        
-        // Returns reference to the set of all property names
-		std::set<std::string> props() const;
- 
-        int count(int codepoint) const;
-        
-		// Loops through all property counts until it finds the method
-		// parameter or hits the end of the map.
-		int count(std::string) const;
+		void readfile(const std::string);     // Pareses Properties file
+
+        std::set<std::string> props() const;  // Returns std::set of unique property names
+
+        int count(int codepoint) const;       // Takes a codepoint and counts number of characters with the same property
+		int count(std::string) const;         // Takes a property name and returns the count of that property
                
-		// return size (stored per data object in private vars)
-		int size() const;
+		int size() const;                     // Returns number of unique property names
         
-        bool empty() const;
-        
-        void clear();
-        
-        void clear_properties();
+        bool empty() const;                   // QUESTION: are there no property names?
+        void clear();                         // CAUTION: Clears all object data
+        void clear_properties();              // Clear list of properties (if readfile is called twice)
         
         // Public Variables
 		std::string properties_file_name;
