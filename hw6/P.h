@@ -36,14 +36,11 @@ class P {
         void clear();                         // CAUTION: Clears all object data
         void clear_properties();              // Clear list of properties (if readfile is called twice)
         
-        // Public Variables
-		std::string properties_file_name;
+    private:
+        std::string properties_file_name;
 		std::set<std::string> unique_properties;
 		std::map<int, std::string> hex_to_property;
 		std::map<std::string, int> property_counts;
-        
-    private:
-        // Nothing for now...
     
 };
 
