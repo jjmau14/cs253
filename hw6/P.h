@@ -17,7 +17,7 @@ class P {
 		// Constructors and Destructor -------------------------
 		P();                      // Default Constructor
 		P(const P &);             // Copy Constructor
-		P(std::string);           // Test Constructor (Takes properties filename)
+		P(const std::string);     // Test Constructor (Takes properties filename)
 		P &operator=(const P &);  // Assignment Operator
 
         ~P();                     // Destructor

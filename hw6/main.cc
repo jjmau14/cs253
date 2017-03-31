@@ -14,6 +14,7 @@ int main(){
             p.count(u.codepoint(i));
         cout << "Should be 17: " << u.size() << '\n'
             << "Should be 1: " << p.count("Lu") << '\n'
+            << "Size of P: " << p.size() << '\n'
             << "Accumulated String: " << u.get() << "\n\n";
     }catch(const string error){
         cout << error << endl;
