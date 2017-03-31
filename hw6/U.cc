@@ -134,7 +134,7 @@ void U::append(std::string line){
 
 std::string U::get(){
     std::string accum_string = "";
-    for (int i = 0 ; i <= size() ; i++){
+    for (int i = 0 ; i <= size()-1 ; i++){
         accum_string += get(i);
     }
     return accum_string;
