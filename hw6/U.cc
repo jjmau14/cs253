@@ -20,7 +20,7 @@ U::U(){
 
 // Copy Constructor -- Copy an existing U object to a new object of type: U.
 U::U(const U &rhs) : utf_file_name(rhs.utf_file_name), utf_string(rhs.utf_string),
-    utf_index(rhs.utf_index){
+    codepoint_map(rhs.codepoint_map), utf_index(rhs.utf_index){
     // Nothing left to do...
 }
 // Test Constructor -- Take a property file and literal string.
@@ -123,6 +123,9 @@ void U::read_string(const std::string line){
                 utf_string[utf_index].push_back(line[i+3]);
                 utf_index++;
             }
+            else {
+				 throw std::string("Error in byte");
+			}
         }
         i++;    // Increment Index Counter
     }
@@ -142,7 +145,7 @@ std::string U::get(){
 
 std::string U::get(const int index){
     if (index >= utf_index)
-        throw string("Index out of bounds!");
+        throw string("Index out of bounds! Method: get(int)");
     string str;
     for (auto x : utf_string[index])
         str += x;
@@ -160,6 +163,8 @@ std::string U::get(const int start, const int end){
 }
             
 int U::codepoint(const int index){
+	if ((unsigned int)index > codepoint_map.size())
+		throw std::string("Index out of bounds! Method: codepoint");
     return codepoint_map[index];
 }
 
