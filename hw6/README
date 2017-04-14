@@ -1,0 +1,5 @@
+To Compile:
+	g++ -Wall *.cc
+	
+To Run:
+	./a.out
