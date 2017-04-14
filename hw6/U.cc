@@ -131,7 +131,7 @@ void U::read_string(const std::string line){
     }
 }
 
-void U::append(std::string line){
+void U::append(const std::string line){
     read_string(line);
 }
 

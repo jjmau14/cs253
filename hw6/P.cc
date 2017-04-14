@@ -104,6 +104,14 @@ int P::size() const{
     return unique_properties.size();
 }
 
+bool P::empty() const {
+	return (unique_properties.size() == 0);
+}
+
+void P::clear() {
+	clear_properties();
+}
+
 void P::clear_properties(){
     unique_properties.clear();
     hex_to_property.clear();
