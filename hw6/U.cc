@@ -173,9 +173,7 @@ int U::size() const{
 }
 
 bool U::empty(){
-    if (utf_index <= 0)
-        return true;
-    return false;
+    return (utf_index == 0);
 }
 
 void U::clear(){
