@@ -87,9 +87,7 @@ std::set<std::string> P::props() const {return unique_properties;}
 // Loops through all property counts until it finds the method
 // 	parameter or hits the end of the map.
 int P::count(std::string property) const {
-    if (property_counts.find(property) != property_counts.end())	// if passed prop name == current item in map
-        return property_counts.find(property)->second;			// return that property->second (first = name; second = count)
-    return 0;												// else not found (aka return 0)
+	return property_counts.find(property)->second;			// return that property->second (first = name; second = count)
 }
 
 void P::count(int codepoint) {

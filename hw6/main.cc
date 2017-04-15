@@ -25,7 +25,7 @@ int main(){
 		for (int i = 0 ; i < u_copy.size() ; i++)
             p.count(u_copy.codepoint(i));
 		cout << "u_copy:\nShould be 9: " << u_copy.size() << '\n'
-            << "Should be 1: " << p.count("Lu") << '\n'
+            << "Should be 1: " << p.count("Ll") << '\n'
             << "Number of Properties: " << p.size() << '\n'
             << "Accumulated String: " << u_copy.get() << "\n\n";
 			

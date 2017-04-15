@@ -21,6 +21,7 @@ U::U(const U &rhs) : utf_file_name(rhs.utf_file_name), utf_string(rhs.utf_string
     codepoint_map(rhs.codepoint_map), utf_index(rhs.utf_index){
     // Nothing left to do...
 }
+
 // Test Constructor -- Take a property file and literal string.
 U::U(std::string u){
     read_string(u);
@@ -62,7 +63,7 @@ void U::read_string(const std::string line){
         if (flag > 0){
             // If the next bit doesn't begin with 10xxxxxx error out
             if ( ((c&0x000000FF)&0xC0) != 0x80){
-                throw std::string("Error in byte");
+                throw std::string("Error in byte" + std::to_string(c));
             }
             flag--;     // decrement flag
             i++;        // incrememnt current index of tempString
@@ -122,7 +123,7 @@ void U::read_string(const std::string line){
                 utf_index++;
             }
             else {
-				 throw std::string("Error in byte");
+				throw std::string("Error in byte" + std::to_string(a));
 			}
         }
         i++;    // Increment Index Counter
@@ -143,7 +144,7 @@ std::string U::get(){
 
 std::string U::get(const int index){
     if (index >= utf_index)
-        throw std::string("Index out of bounds! Method: get(int)");
+        throw std::string("Index \"" + std::to_string(index) + "\" is out of bounds! Method: get(int)");
     std::string str;
     for (auto x : utf_string[index])
         str += x;
@@ -162,7 +163,7 @@ std::string U::get(const int start, const int end){
             
 int U::codepoint(const int index){
 	if ((unsigned int)index > codepoint_map.size())
-		throw std::string("Index out of bounds! Method: codepoint");
+		throw std::string("Index \"" + std::to_string(index) + "\" is out of bounds! Method: codepoint");
     return codepoint_map[index];
 }
 
