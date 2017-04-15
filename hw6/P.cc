@@ -11,8 +11,6 @@
 #include <sstream>
 #include "P.h"
 
-using namespace std;
-
 // Default Constructor -- Accumulated String (utf_string) is empty.
 P::P(){
     properties_file_name = "";

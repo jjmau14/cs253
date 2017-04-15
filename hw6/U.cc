@@ -11,8 +11,6 @@
 #include <sstream>
 #include "U.h"
 
-using namespace std;
-
 // Default Constructor -- Accumulated String (utf_string) is empty.
 U::U(){
     utf_file_name = "";
@@ -145,8 +143,8 @@ std::string U::get(){
 
 std::string U::get(const int index){
     if (index >= utf_index)
-        throw string("Index out of bounds! Method: get(int)");
-    string str;
+        throw std::string("Index out of bounds! Method: get(int)");
+    std::string str;
     for (auto x : utf_string[index])
         str += x;
     return str;
@@ -154,7 +152,7 @@ std::string U::get(const int index){
 
 std::string U::get(const int start, const int end){
     if (start >= end)
-        throw string("Invalid half-open interval!");
+        throw std::string("Invalid half-open interval!");
 
     std::string interval_string = "";
     for (int i = start ; i < end ; i++)
