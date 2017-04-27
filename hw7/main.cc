@@ -32,6 +32,7 @@ int main(){
 		const U const_copy(u);
 		u.append("aa  3");
 			
+		cout << p;
     }catch(const string error){
         cout << error << endl;
     }

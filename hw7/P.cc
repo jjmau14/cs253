@@ -38,6 +38,16 @@ P &P::operator=(const P &rhs) {
 // Destructor -- No dynamic data
 P::~P(){}
 
+std::ostream &operator<<(std::ostream &out, const P &prop_reference){
+	std::string temp = "Property: Count\n";
+	for (auto &p : prop_reference.property_counts){
+		temp += p.first + ": " + std::to_string(p.second) + '\n';
+	}
+	return out << temp;
+}
+
+
+
 // Methods of Class 'P' --------------------------------
 void P::readfile(const std::string fileName){
     clear_properties();

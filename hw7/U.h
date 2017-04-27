@@ -18,10 +18,42 @@ class U {
 		U();                      // Default Constructor
 		U(const U &);             // Copy Constructor
 		U(std::string);           // Test Constructor (Takes a string literal)
-		U &operator=(const U &);  // Assignment Operator
-
 		~U();                     // Destructor
-
+		
+		// BEGIN Operators: ----------------------------------------------------
+		// Assignment Operators
+		U &operator=(const U &);  		// Assigns this to a U::U)
+		U &operator=(const std::string &); 	// Assigns this to a std::string
+		
+		// Concatenation Operators
+		U operator+(const U &);
+		U operator+(const std::string &);
+		// U operator+(???);
+		
+		// Append Operators
+		U &operator+=(const std::string &);
+		U &operator+=(const U &);
+		
+		// Subscripting Operator
+		std::string operator[](int);
+		
+		// ostream
+		friend std::ostream &operator<<(std::ostream &, const U &);
+		
+		// Boolean Evaluation
+		bool operator()(const U &);
+		
+		// Comparison 
+		bool operator==(const U &);
+		bool operator==(const std::string &);
+		// bool operator==(???);
+		bool operator!=(const U &);
+		bool operator!=(const std::string &);
+		// bool operator==(???);
+		
+		
+		// END OPERATORS --------------------------------------------------------
+		
 		// Methods of Class 'U' --------------------------------
 		void readfile(const std::string);         // Calls read_string on each line of a file
         void read_string(const std::string);      // Parses UTF-8 characters from string

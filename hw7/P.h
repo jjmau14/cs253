@@ -18,10 +18,19 @@ class P {
 		P();                      // Default Constructor
 		P(const P &);             // Copy Constructor
 		P(const std::string);     // Test Constructor (Takes properties filename)
-		P &operator=(const P &);  // Assignment Operator
-
         ~P();                     // Destructor
 
+		// BEGIN operators -------------------------------------------------
+		// Assignment 
+		P &operator=(const P &);  // Assignment Operator
+		
+		// ostream
+		friend std::ostream &operator<<(std::ostream &, const P &);
+		
+		// Boolean Evaluation
+		
+		// END operators ----------------------------------------------------
+		
 		// Methods of Class 'P' --------------------------------
 		void readfile(const std::string);     // Pareses Properties file
 

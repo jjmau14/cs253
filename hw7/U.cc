@@ -27,6 +27,10 @@ U::U(std::string u){
     read_string(u);
 }
 
+// Destructor -- No dynamic data
+U::~U(){}
+
+// BEGIN Operators -------------------------------------
 // Assignment Operator
 U &U::operator=(const U &rhs) {
     utf_file_name = rhs.utf_file_name;
@@ -34,9 +38,58 @@ U &U::operator=(const U &rhs) {
     utf_index = rhs.utf_index;
     return *this;
 }
+U &U::operator=(const std::string &s){
+	U other(*this);
+	other.append(s);
+	return *this;
+}
+		
+// Concatenation Operators
+U operator+(const U &u){
+	// TODO
+}
 
-// Destructor -- No dynamic data
-U::~U(){}
+U operator+(const std::string &s){
+	U other(this);
+	other.append(s);
+	return *this;
+}
+// U operator+(???);
+		
+// Append Operators
+U &operator+=(const std::string &s){
+	return this.append(s);
+}
+U &operator+=(const U &);
+
+// Subscripting Operator
+std::string operator[](int);
+
+// ostream
+friend std::ostream &operator<<(std::ostream &out, const U &u){
+	return out << 
+}
+
+// Boolean Evaluation
+bool operator()(const U &);
+
+// Comparison 
+bool operator==(const U &u)const{
+	return true;
+}
+bool operator==(const std::string &s)const{
+	return true;
+}
+// bool operator==(???);
+bool operator!=(const U &u){
+	return !(this == u);
+}
+bool operator!=(const std::string &s){
+	return !(this == s);
+}
+// bool operator==(???);
+
+// END Operators ---------------------------------------
 
 // Methods of Class 'U' --------------------------------
 void U::readfile(const std::string fileName){
