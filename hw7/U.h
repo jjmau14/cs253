@@ -26,9 +26,9 @@ class U {
 		U &operator=(const std::string &); 	// Assigns this to a std::string
 		
 		// Concatenation Operators
-		U operator+(const U &);
-		U operator+(const std::string &);
-		// U operator+(???);
+		U operator+(const U &)const;
+		U operator+(const std::string &)const;
+		friend U operator+(const std::string &, const U &);
 		
 		// Append Operators
 		U &operator+=(const std::string &);
@@ -44,12 +44,12 @@ class U {
 		bool operator()(const U &);
 		
 		// Comparison 
-		bool operator==(const U &);
-		bool operator==(const std::string &);
-		// bool operator==(???);
-		bool operator!=(const U &);
-		bool operator!=(const std::string &);
-		// bool operator==(???);
+		bool operator==(const U &)const;
+		bool operator==(const std::string &)const;
+		friend bool operator==(const std::string &, const U &);
+		bool operator!=(const U &)const;
+		bool operator!=(const std::string &)const;
+		friend bool operator!=(const std::string &, const U &);
 		
 		
 		// END OPERATORS --------------------------------------------------------

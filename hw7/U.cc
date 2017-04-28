@@ -11,83 +11,114 @@
 #include <sstream>
 #include "U.h"
 
-// Default Constructor -- Accumulated String (utf_string) is empty.
+// Default Constructor -- Accumulated String (utf_string) is empty. --------
 U::U(){
     utf_file_name = "";
 }	
+// -------------------------------------------------------------------------
 
-// Copy Constructor -- Copy an existing U object to a new object of type: U.
+// Copy Constructor -- Copy an existing U object to a new object of type: U. ----------
 U::U(const U &rhs) : utf_file_name(rhs.utf_file_name), utf_string(rhs.utf_string),
     codepoint_map(rhs.codepoint_map), utf_index(rhs.utf_index){
     // Nothing left to do...
 }
+// ------------------------------------------------------------------------------------
 
-// Test Constructor -- Take a property file and literal string.
+// Test Constructor -- Take a property file and literal string. --------
 U::U(std::string u){
     read_string(u);
 }
+// ---------------------------------------------------------------------
 
 // Destructor -- No dynamic data
 U::~U(){}
+// -----------------------------
 
-// BEGIN Operators -------------------------------------
-// Assignment Operator
+// Assignment Operator (assign another U) --------------
 U &U::operator=(const U &rhs) {
     utf_file_name = rhs.utf_file_name;
     utf_string = rhs.utf_string;
     utf_index = rhs.utf_index;
     return *this;
 }
-U &U::operator=(const std::string &s){
-	U other(*this);
-	other.append(s);
-	return *this;
-}
-		
-// Concatenation Operators
-U operator+(const U &u){
-	// TODO
-}
+// -----------------------------------------------------
 
-U operator+(const std::string &s){
-	U other(this);
-	other.append(s);
+// Assignment Operator (Assign a string to a U) --------
+U &U::operator=(const std::string &s){
+	this->clear();
+	this->append(s);
 	return *this;
 }
-// U operator+(???);
+// -----------------------------------------------------
 		
-// Append Operators
-U &operator+=(const std::string &s){
-	return this.append(s);
+// Concatenation Operators (U + U) ---------------------
+U U::operator+(const U &u)const{
+	U other(u);
+	return other;
 }
-U &operator+=(const U &);
+// -----------------------------------------------------
+
+// Concatenation Operators (U + S) ---------------------
+U U::operator+(const std::string &s)const{
+	U other(s);
+	return other;
+}
+// -----------------------------------------------------
+
+// Concatenation Operators (S + U) ---------------------
+U operator+(const std::string &s, const U &u){
+	U other(u);
+	return other;
+}
+// -----------------------------------------------------
+
+// Append Operators (U += s) ---------------------------
+U &U::operator+=(const std::string &s){
+	this->append(s);
+	return *this;
+}
+// -----------------------------------------------------
+
+// Append Operators (U += u) ---------------------------
+U &U::operator+=(const U &u){
+	return *this;
+}
+// -----------------------------------------------------
 
 // Subscripting Operator
-std::string operator[](int);
+std::string U::operator[](int){
+	return std::string();
+}
 
 // ostream
-friend std::ostream &operator<<(std::ostream &out, const U &u){
-	return out << 
+std::ostream &operator<<(std::ostream &out, const U &u){
+	return out << "hello";
 }
 
 // Boolean Evaluation
-bool operator()(const U &);
+bool U::operator()(const U &){
+	return true;
+}
 
 // Comparison 
-bool operator==(const U &u)const{
+bool U::operator==(const U &u)const{
 	return true;
 }
-bool operator==(const std::string &s)const{
+bool U::operator==(const std::string &s)const{
 	return true;
 }
-// bool operator==(???);
-bool operator!=(const U &u){
-	return !(this == u);
+bool operator==(const std::string &, const U &){
+	return true;
 }
-bool operator!=(const std::string &s){
-	return !(this == s);
+bool U::operator!=(const U &u)const{
+	return !(*this == u);
 }
-// bool operator==(???);
+bool U::operator!=(const std::string &s)const{
+	return !(*this == s);
+}
+bool operator!=(const std::string &, const U &){
+	return true;
+}
 
 // END Operators ---------------------------------------
 
