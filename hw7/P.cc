@@ -39,7 +39,8 @@ P &P::operator=(const P &rhs) {
 P::~P(){}
 
 std::ostream &operator<<(std::ostream &out, const P &prop_reference){
-	std::string temp = "Property: Count\n";
+	std::string temp = "Property: Count\n"
+						"---------------\n";
 	for (auto &p : prop_reference.property_counts){
 		temp += p.first + ": " + std::to_string(p.second) + '\n';
 	}

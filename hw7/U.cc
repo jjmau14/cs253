@@ -34,6 +34,7 @@ U::U(std::string u){
 U::~U(){}
 // -----------------------------
 
+// BEGIN Operators ---------------------------------------
 // Assignment Operator (assign another U) --------------
 U &U::operator=(const U &rhs) {
     utf_file_name = rhs.utf_file_name;
@@ -53,28 +54,36 @@ U &U::operator=(const std::string &s){
 		
 // Concatenation Operators (U + U) ---------------------
 U U::operator+(const U &u)const{
-	U other(u);
+	U other(*this);
+	int u_index = 0;
+	// utf_index is automcatically incremeneted for the next available slot (0 based)
+	for ( int i = other.utf_index; i < other.utf_index + u.utf_index ; ++i){
+		other.utf_string[i] = u.utf_string.find(u_index)->second;
+		other.codepoint_map[i] = u.codepoint_map.find(u_index)->second;
+		++u_index;
+	}
+	other.utf_index += u.utf_index;
 	return other;
 }
 // -----------------------------------------------------
 
 // Concatenation Operators (U + S) ---------------------
 U U::operator+(const std::string &s)const{
-	U other(s);
+	U other(*this);
+	other.append(s);
 	return other;
 }
 // -----------------------------------------------------
 
 // Concatenation Operators (S + U) ---------------------
 U operator+(const std::string &s, const U &u){
-	U other(u);
+	U other(s);
 	return other;
 }
 // -----------------------------------------------------
 
 // Append Operators (U += s) ---------------------------
 U &U::operator+=(const std::string &s){
-	this->append(s);
 	return *this;
 }
 // -----------------------------------------------------
@@ -89,7 +98,7 @@ U &U::operator+=(const U &u){
 std::string U::operator[](int i){
 	return U::get(i);
 }
-// -----------------------------------------------------
+// ---l--------------------------------------------------
 
 // ostream ---------------------------------------------
 std::ostream &operator<<(std::ostream &out, const U &u){
@@ -252,8 +261,8 @@ std::string U::get(const int start, const int end)const{
 }
             
 int U::codepoint(const int index)const{
-	if ((unsigned int)index > codepoint_map.size())
-		throw std::string("Index \"" + std::to_string(index) + "\" is out of bounds! Method: codepoint");
+	//if ((unsigned int)index > codepoint_map.size())
+	//	throw std::string("Index \"" + std::to_string(index) + "\" is out of bounds! Method: codepoint");
     auto itor = codepoint_map.find(index);
 	if(itor != codepoint_map.end()){
 		return itor->second;

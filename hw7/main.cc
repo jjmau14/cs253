@@ -31,9 +31,17 @@ int main(){
 			
 		const U const_copy(u);
 		u.append("aa  3");
-		u = "aa  3";
-		cout << p;
-		cout << u;
+		u = "abcd";
+		
+		U u2;
+		u2 = "abcd";
+		u2 += u;
+		
+		P p2("UnicodeData.txt");
+		cout << u2.size() << endl;
+		for (int i = 0 ; i < u2.size() ; i++)
+            p2.count(u2.codepoint(i));
+		cout << p2;
     }catch(const string error){
         cout << error << endl;
     }
