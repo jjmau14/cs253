@@ -93,7 +93,7 @@ std::string U::operator[](int i){
 
 // ostream ---------------------------------------------
 std::ostream &operator<<(std::ostream &out, const U &u){
-	return out << std::string(u.get());
+	return out << u.get();
 }
 // -----------------------------------------------------
 
