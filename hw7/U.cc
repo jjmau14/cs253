@@ -85,15 +85,17 @@ U &U::operator+=(const U &u){
 }
 // -----------------------------------------------------
 
-// Subscripting Operator
-std::string U::operator[](int){
-	return std::string();
+// Subscripting Operator -------------------------------
+std::string U::operator[](int i){
+	return U::get(i);
 }
+// -----------------------------------------------------
 
-// ostream
+// ostream ---------------------------------------------
 std::ostream &operator<<(std::ostream &out, const U &u){
-	return out << "hello";
+	return out << std::string(u.get());
 }
+// -----------------------------------------------------
 
 // Boolean Evaluation
 bool U::operator()(const U &){
@@ -218,7 +220,7 @@ void U::append(const std::string line){
     read_string(line);
 }
 
-std::string U::get(){
+std::string U::get()const{
     std::string accum_string = "";
     for (int i = 0 ; i <= size()-1 ; i++){		// size - 1 for 0-base indexing
         accum_string += get(i);
@@ -226,16 +228,20 @@ std::string U::get(){
     return accum_string;
 }
 
-std::string U::get(const int index){
+std::string U::get(const int index)const{
     if (index >= utf_index)
         throw std::string("Index \"" + std::to_string(index) + "\" is out of bounds! Method: get(int)");
     std::string str;
-    for (auto x : utf_string[index])
-        str += x;
+    auto itor = utf_string.find(index);
+	if (itor != utf_string.end()){
+		for (auto c : itor->second){
+			str += c;
+		}
+	}
     return str;
 }
 
-std::string U::get(const int start, const int end){
+std::string U::get(const int start, const int end)const{
     if (start >= end)
         throw std::string("Invalid half-open interval!");
 
@@ -245,17 +251,21 @@ std::string U::get(const int start, const int end){
     return interval_string;
 }
             
-int U::codepoint(const int index){
+int U::codepoint(const int index)const{
 	if ((unsigned int)index > codepoint_map.size())
 		throw std::string("Index \"" + std::to_string(index) + "\" is out of bounds! Method: codepoint");
-    return codepoint_map[index];
+    auto itor = codepoint_map.find(index);
+	if(itor != codepoint_map.end()){
+		return itor->second;
+	}
+	return -1;
 }
 
 int U::size() const{ 
     return utf_index;
 }
 
-bool U::empty(){
+bool U::empty()const{
     return (utf_index == 0);
 }
 

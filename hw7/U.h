@@ -59,15 +59,15 @@ class U {
         void read_string(const std::string);      // Parses UTF-8 characters from string
 		void append(const std::string);           // Calls read_string for a passed string (append to utf_string)
     
-		std::string get();                        // Returns full utf_string
-		std::string get(const int);               // Returns UTF-8 character at index of utf_string
-		std::string get(const int, const int);    // Returns half open interval of UTF-8 characters
+		std::string get()const;                        // Returns full utf_string
+		std::string get(const int)const;               // Returns UTF-8 character at index of utf_string
+		std::string get(const int, const int)const;    // Returns half open interval of UTF-8 characters
 		
-        int codepoint(const int);                // Returns the codepoint of the UTF-8 character at index
+        int codepoint(const int)const;                // Returns the codepoint of the UTF-8 character at index
         
 		int size() const;                         // Total size of utf_string (utf_index)
     
-        bool empty();                             // QUESTION: is the utf_string empty?
+        bool empty()const;                             // QUESTION: is the utf_string empty?
         void clear();                             // CAUTION: Clears entire utf_string
         
     private:
