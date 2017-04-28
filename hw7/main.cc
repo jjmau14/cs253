@@ -30,13 +30,15 @@ int main(){
             << "Accumulated String: " << u_copy.get() << "\n\n";
 			
 		const U const_copy(u);
-		u.append("aa  3");
+
 		u = "abcd";
 		
-		U u2;
-		u2 = "abcd" + u;
+		U u2 = string("abcd");
+		u2 += u;
 		
-		P p2("UnicodeData.txt");
+		P p2;
+		if (!p2) cout << "k" << endl;
+		p2.readfile("UnicodeData.txt");
 		cout << u2.size() << endl;
 		for (int i = 0 ; i < u2.size() ; i++)
             p2.count(u2.codepoint(i));

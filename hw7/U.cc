@@ -78,9 +78,8 @@ U U::operator+(const std::string &s)const{
 // Concatenation Operators (S + U) ---------------------
 U operator+(const std::string &s, const U &u){
 	// TODO: Not workings
-	U other1(s);
-	U other(u);
-	return U(other1 + other);
+	U other(s);
+	return other;
 }
 // -----------------------------------------------------
 
@@ -118,8 +117,8 @@ std::ostream &operator<<(std::ostream &out, const U &u){
 // -----------------------------------------------------
 
 // Boolean Evaluation
-bool U::operator()(const U &){
-	return true;
+U::operator bool()const{
+	return (utf_index > 0 || utf_file_name != "");
 }
 
 // Comparison (U == U) ---------------------

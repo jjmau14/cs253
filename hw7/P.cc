@@ -47,6 +47,9 @@ std::ostream &operator<<(std::ostream &out, const P &prop_reference){
 	return out << temp;
 }
 
+P::operator bool()const{
+	return ( size() > 0 || properties_file_name != "");
+}
 
 
 // Methods of Class 'P' --------------------------------

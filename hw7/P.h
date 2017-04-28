@@ -28,7 +28,7 @@ class P {
 		friend std::ostream &operator<<(std::ostream &, const P &);
 		
 		// Boolean Evaluation
-		
+		operator bool()const;
 		// END operators ----------------------------------------------------
 		
 		// Methods of Class 'P' --------------------------------
