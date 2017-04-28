@@ -24,11 +24,11 @@ U::U(const U &rhs) : utf_file_name(rhs.utf_file_name), utf_string(rhs.utf_string
 }
 // ------------------------------------------------------------------------------------
 
-// Test Constructor -- Take a property file and literal string. --------
-U::U(std::string u){
-    read_string(u);
+// Test Constructor -- Takes a literal string. --------------
+U::U(std::string s){
+    read_string(s);
 }
-// ---------------------------------------------------------------------
+// ----------------------------------------------------------
 
 // Destructor -- No dynamic data
 U::~U(){}
@@ -77,19 +77,30 @@ U U::operator+(const std::string &s)const{
 
 // Concatenation Operators (S + U) ---------------------
 U operator+(const std::string &s, const U &u){
-	U other(s);
-	return other;
+	// TODO: Not workings
+	U other1(s);
+	U other(u);
+	return U(other1 + other);
 }
 // -----------------------------------------------------
 
 // Append Operators (U += s) ---------------------------
 U &U::operator+=(const std::string &s){
+	append(s);
 	return *this;
 }
 // -----------------------------------------------------
 
 // Append Operators (U += u) ---------------------------
 U &U::operator+=(const U &u){
+	int u_index = 0;
+	// utf_index is automcatically incremeneted for the next available slot (0 based)
+	for ( int i = utf_index; i < utf_index + u.utf_index ; ++i){
+		utf_string[i] = u.utf_string.find(u_index)->second;
+		codepoint_map[i] = u.codepoint_map.find(u_index)->second;
+		++u_index;
+	}
+	utf_index += u.utf_index;
 	return *this;
 }
 // -----------------------------------------------------
@@ -98,7 +109,7 @@ U &U::operator+=(const U &u){
 std::string U::operator[](int i){
 	return U::get(i);
 }
-// ---l--------------------------------------------------
+// ------------------------------------------------------
 
 // ostream ---------------------------------------------
 std::ostream &operator<<(std::ostream &out, const U &u){
@@ -111,26 +122,41 @@ bool U::operator()(const U &){
 	return true;
 }
 
-// Comparison 
+// Comparison (U == U) ---------------------
 bool U::operator==(const U &u)const{
 	return true;
 }
+// -----------------------------------------
+
+// Comparison (U == S) ---------------------
 bool U::operator==(const std::string &s)const{
 	return true;
 }
-bool operator==(const std::string &, const U &){
+// -----------------------------------------
+
+// Comparison (S == U) ---------------------
+bool operator==(const std::string &s, const U &u){
 	return true;
 }
+// -----------------------------------------
+
+// Comparison (U != U) ---------------------
 bool U::operator!=(const U &u)const{
 	return !(*this == u);
 }
+// -----------------------------------------
+
+// Comparison (U != S) ---------------------
 bool U::operator!=(const std::string &s)const{
 	return !(*this == s);
 }
-bool operator!=(const std::string &, const U &){
-	return true;
-}
+// -----------------------------------------
 
+// Comparison (S != U) ---------------------
+bool operator!=(const std::string &s, const U &u){
+	return !(s == u);
+}
+// -----------------------------------------
 // END Operators ---------------------------------------
 
 // Methods of Class 'U' --------------------------------

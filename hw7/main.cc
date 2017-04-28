@@ -34,8 +34,7 @@ int main(){
 		u = "abcd";
 		
 		U u2;
-		u2 = "abcd";
-		u2 += u;
+		u2 = "abcd" + u;
 		
 		P p2("UnicodeData.txt");
 		cout << u2.size() << endl;
