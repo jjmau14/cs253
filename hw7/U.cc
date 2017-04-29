@@ -105,7 +105,7 @@ U &U::operator+=(const U &u){
 // -----------------------------------------------------
 
 // Subscripting Operator -------------------------------
-std::string U::operator[](int i){
+std::string U::operator[](int i)const{
 	return U::get(i);
 }
 // ------------------------------------------------------
@@ -235,6 +235,7 @@ void U::read_string(const std::string line){
                 a <<= 6;                                  // Shift left 6 for next byte
                 a |= ((line[i+2]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
                 a <<= 6;                                  // Shift left 6 for next byte
+                a |= ((line[i+3]&(0x000000FF)) & 0x3F );  // Remove first two bits (10xxxxxx) of next unicode character and OR it with currenct value
                 codepoint_map[utf_index] = a;
                 utf_string[utf_index].push_back(line[i]);
                 utf_string[utf_index].push_back(line[i+1]);

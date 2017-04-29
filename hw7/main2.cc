@@ -31,7 +31,7 @@
         					// (If your terminal manages it)
         P p;
         assert(!p);
-        p.readfile(pub+"UnicodeData.txt");
+        p.readfile("UnicodeData.txt");
         assert(p);
         for (int i=0; i<u3.size(); i++)
             p.count(u3.codepoint(i));
