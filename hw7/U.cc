@@ -47,8 +47,8 @@ U &U::operator=(const U &rhs) {
 
 // Assignment Operator (Assign a string to a U) --------
 U &U::operator=(const std::string &s){
-	this->clear();
-	this->append(s);
+	clear();
+	append(s);
 	return *this;
 }
 // -----------------------------------------------------
