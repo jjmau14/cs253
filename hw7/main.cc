@@ -31,18 +31,30 @@ int main(){
 			
 		const U const_copy(u);
 
-		u = "abcd";
+		u = string("☮☮☮");
 		
-		U u2 = string("abcd");
-		u2 += u;
+		U u2 = string("☮☮☮");
+		
+		if (u == u2)
+			cout << "You Should See This" << endl;
+		if (u != u2)
+			cout << "You Should NOT See This" << endl;
+		if (u == "☮☮☮")
+			cout << "You Should See This" << endl;
+		if (u == "☮☮")
+			cout << "You Should NOT See This" << endl;
 		
 		P p2;
 		if (!p2) cout << "You Should See this" << endl;
+		
 		p2.readfile("UnicodeData.txt");
-		if (!p2) cout << "You Should Not See this" << endl;
+		
+		if (!p2) cout << "You Should NOT See this" << endl;
 		cout << u2.size() << endl;
+		
 		for (int i = 0 ; i < u2.size() ; i++)
             p2.count(u2.codepoint(i));
+		
 		cout << p2;
     }catch(const string error){
         cout << error << endl;

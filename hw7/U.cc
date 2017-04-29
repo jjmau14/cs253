@@ -11,6 +11,7 @@
 #include <sstream>
 #include "U.h"
 
+// BEGIN ctors/dtors ----------------------------
 // Default Constructor -- Accumulated String (utf_string) is empty. --------
 U::U(){
     utf_file_name = "";
@@ -32,7 +33,7 @@ U::U(std::string s){
 
 // Destructor -- No dynamic data
 U::~U(){}
-// -----------------------------
+// END ctors/dtors --------------------------------------
 
 // BEGIN Operators ---------------------------------------
 // Assignment Operator (assign another U) --------------
@@ -77,8 +78,8 @@ U U::operator+(const std::string &s)const{
 
 // Concatenation Operators (S + U) ---------------------
 U operator+(const std::string &s, const U &u){
-	// TODO: Not workings
 	U other(s);
+	other += u;
 	return other;
 }
 // -----------------------------------------------------
@@ -105,7 +106,7 @@ U &U::operator+=(const U &u){
 // -----------------------------------------------------
 
 // Subscripting Operator -------------------------------
-std::string U::operator[](int i)const{
+std::string U::operator[](const int i)const{
 	return U::get(i);
 }
 // ------------------------------------------------------
@@ -123,13 +124,18 @@ U::operator bool()const{
 
 // Comparison (U == U) ---------------------
 bool U::operator==(const U &u)const{
-	// TODO
+	
+	for (int i = 0 ; i < utf_index ; ++i){
+		if (utf_string.find(i)->second != u.utf_string.find(i)->second)
+			return false;
+	}
 	return true;
 }
 // -----------------------------------------
 
 // Comparison (U == S) ---------------------
 bool U::operator==(const std::string &s)const{
+	
 	// TODO
 	return true;
 }
@@ -161,6 +167,7 @@ bool operator!=(const std::string &s, const U &u){
 // -----------------------------------------
 // END Operators ---------------------------------------
 
+// BEGIN methods ---------------------------------------
 // Methods of Class 'U' --------------------------------
 void U::readfile(const std::string fileName){
     std::ifstream readfile(fileName);
@@ -313,3 +320,4 @@ void U::clear(){
 	utf_index = 0;
 	utf_file_name = "";
 }
+// END methods of class U ------------------------------

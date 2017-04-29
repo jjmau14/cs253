@@ -35,7 +35,7 @@ class U {
 		U &operator+=(const U &);
 		
 		// Subscripting Operator
-		std::string operator[](int)const;
+		std::string operator[](const int)const;
 		
 		// ostream
 		friend std::ostream &operator<<(std::ostream &, const U &);
