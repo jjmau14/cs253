@@ -123,18 +123,21 @@ U::operator bool()const{
 
 // Comparison (U == U) ---------------------
 bool U::operator==(const U &u)const{
+	// TODO
 	return true;
 }
 // -----------------------------------------
 
 // Comparison (U == S) ---------------------
 bool U::operator==(const std::string &s)const{
+	// TODO
 	return true;
 }
 // -----------------------------------------
 
 // Comparison (S == U) ---------------------
 bool operator==(const std::string &s, const U &u){
+	// TODO
 	return true;
 }
 // -----------------------------------------
