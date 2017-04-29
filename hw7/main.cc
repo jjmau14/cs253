@@ -37,8 +37,9 @@ int main(){
 		u2 += u;
 		
 		P p2;
-		if (!p2) cout << "k" << endl;
+		if (!p2) cout << "You Should See this" << endl;
 		p2.readfile("UnicodeData.txt");
+		if (!p2) cout << "You Should Not See this" << endl;
 		cout << u2.size() << endl;
 		for (int i = 0 ; i < u2.size() ; i++)
             p2.count(u2.codepoint(i));

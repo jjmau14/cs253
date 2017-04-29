@@ -3,7 +3,6 @@
     #include <iostream>
     #include <cassert>
     using namespace std;
-    const string pub="/s/bach/a/class/cs253/pub/";   // ~ only works in shells
 
     int main() {
         U u;
