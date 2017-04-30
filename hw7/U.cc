@@ -135,16 +135,19 @@ bool U::operator==(const U &u)const{
 
 // Comparison (U == S) ---------------------
 bool U::operator==(const std::string &s)const{
-	
-	// TODO
-	return true;
+	std::string temp = "";
+	for (int i = 0 ; i < utf_index ; ++i){
+		for (auto c : utf_string.find(i)->second){
+			temp += c;
+		}
+	}
+	return !(temp != s);
 }
 // -----------------------------------------
 
 // Comparison (S == U) ---------------------
 bool operator==(const std::string &s, const U &u){
-	// TODO
-	return true;
+	return (u == s);
 }
 // -----------------------------------------
 

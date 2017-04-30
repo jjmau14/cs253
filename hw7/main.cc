@@ -90,7 +90,16 @@ int main(){
 			cout << "U::operator!=(std::string) : test FAILED" << endl;
 		else
 			cout << "U::operator!=(std::string) : test passed" << endl;
+	
+		if ("☮☮" == u) // should be false
+			cout << "U::operator==(std::string, U::U) : test FAILED" << endl;
+		else
+			cout << "U::operator==(std::string, U::U) doesn't match: test passed" << endl;
 		
+		if ("☮☮☮" == u) 
+			cout << "U::operator==(std::string, U::U) does match: test passed" << endl;
+		else
+			cout << "U::operator==(std::string, U::U) : test FAILED" << endl;
 		P p2;
 		if (!p2) 
 			cout << "P::operator bool() returns true: test passed" << endl;
