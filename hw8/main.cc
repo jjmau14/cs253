@@ -7,7 +7,7 @@ using namespace std;
 
 int main(){
     try {
-        U u;
+        U u; // first U
         u.readfile("data");
 
 		P p("UnicodeData.txt");
