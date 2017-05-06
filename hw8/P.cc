@@ -14,7 +14,7 @@
 // Default Constructor -- Accumulated String (utf_string) is empty.
 P::P(){
     properties_file_name = "";
-}	
+}
 
 // Copy Constructor -- Copy an existing U object to a new object of type: U.
 P::P(const P &rhs) : properties_file_name(rhs.properties_file_name), unique_properties(rhs.unique_properties),
