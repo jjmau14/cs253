@@ -11,41 +11,50 @@
 #include <vector>
 #include <set>
 #include <map>
+class U;
+
+class uitor {
+        const U* u;
+        int index;
+    public:
+        uitor(U* u_ = nullptr, int index_ = 0) : u(u_), index(index_){ }
+        uitor(const uitor& itor) : u(itor.u),index(itor.index){ }
+        uitor &operator=(const uitor& itor);
+        uitor &operator++();
+        uitor operator++(int);
+        uitor &operator--();
+        uitor operator--(int);
+        int operator*();
+        bool operator==(const uitor &rhs) const;
+        bool operator!=(const uitor &rhs) const;
+        ~uitor(){};
+};
 
 class U {
+    std::string utf_file_name;
+    std::map<int, std::vector<int>> utf_string;
+    std::map<int, int> codepoint_map;
+    int utf_index = 0;
+        
 	public:
+            typedef uitor iterator;
+
 		// Constructors and Destructor -------------------------
 		U();                      // Default Constructor
 		U(const U &);             // Copy Constructor
 		U(std::string);           // Test Constructor (Takes a string literal)
-		template <typename iter>
-		U(iter, iter);            // Itertator Constructor
+        U(const void* begin, const void* end);
 		~U();                     // Destructor
 		
-        // BEGIN iterator Methods -----------------------------------
-        class iterator {
-            public:
-                iterator();
-                iterator(const U::iterator&);
-                iterator &operator=(const U::iterator&);
-                ~iterator();
-                
-                bool operator==(iterator&);
-                bool operator!=(iterator&);
-                iterator &operator++();
-                iterator operator++(int);
-                iterator &operator--();
-                iterator operator--(int);
-                int &operator*();
-        };
-        
-        iterator begin();
-        iterator end();
+        uitor begin(){
+            return uitor();
+        }
+        uitor end(){
+            return uitor();
+        }
         int front();
         int back();
         
-        // END iterator Methods -------------------------------------
-                 
 		// BEGIN Operators: -----------------------------------------
 		// Assignment Operators
 		U &operator=(const U &);  		// Assigns this to a U::U)
@@ -96,12 +105,6 @@ class U {
         bool empty()const;                             // QUESTION: is the utf_string empty?
         void clear();                             // CAUTION: Clears entire utf_string
         
-    private:
-        std::string utf_file_name;
-        std::map<int, std::vector<int>> utf_string;
-        std::map<int, int> codepoint_map;
-        int utf_index = 0;
-    
 };
 
 #endif

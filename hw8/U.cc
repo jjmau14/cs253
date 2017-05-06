@@ -29,6 +29,16 @@ U::U(const U &rhs) : utf_file_name(rhs.utf_file_name), utf_string(rhs.utf_string
 U::U(std::string s){
     read_string(s);
 }
+
+U::U(const void* begin, const void* end){
+    std::string s;
+    char *itor = (char*)begin;
+    while(itor != end){
+        s += *itor;
+        itor++;
+    }
+    append(s);
+}
 // ----------------------------------------------------------
 
 // Destructor -- No dynamic data
@@ -53,8 +63,47 @@ U &U::operator=(const std::string &s){
 }
 // -----------------------------------------------------
 
-// Iterator Methods ------------------------------------
+// uitor Methods ------------------------------------
+uitor &uitor::operator=(const uitor& itor){
+    u = itor.u;
+    index = itor.index;
+    return *this;
+}
+uitor &uitor::operator++(){
+    ++index;
+    return *this;
+}
+uitor uitor::operator++(int){
+    const auto save = *this;
+    ++*this;
+    return save;
+}
+uitor &uitor::operator--(){
+    --index;
+    return *this;;
+}
+uitor uitor::operator--(int){
+    const auto save = *this;
+    --*this;
+    return save;
+}
+int uitor::operator*(){
+    return u->codepoint(index);
+}
+bool uitor::operator==(const uitor &rhs) const{
+    return index == rhs.index;
+}
+bool uitor::operator!=(const uitor &rhs) const{
+    return !(*this == rhs);
+}
 
+int U::front(){
+    return codepoint(0);
+}
+int U::back(){
+    return codepoint(utf_index-1);
+}
+    
 // -----------------------------------------------------
 
 // Concatenation Operators (U + U) ---------------------
