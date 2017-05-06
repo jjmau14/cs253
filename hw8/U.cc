@@ -52,7 +52,11 @@ U &U::operator=(const std::string &s){
 	return *this;
 }
 // -----------------------------------------------------
-		
+
+// Iterator Methods ------------------------------------
+
+// -----------------------------------------------------
+
 // Concatenation Operators (U + U) ---------------------
 U U::operator+(const U &u)const{
 	U other(*this);

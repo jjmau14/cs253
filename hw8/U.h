@@ -18,9 +18,35 @@ class U {
 		U();                      // Default Constructor
 		U(const U &);             // Copy Constructor
 		U(std::string);           // Test Constructor (Takes a string literal)
+		template <typename iter>
+		U(iter, iter);            // Itertator Constructor
 		~U();                     // Destructor
 		
-		// BEGIN Operators: ----------------------------------------------------
+        // BEGIN iterator Methods -----------------------------------
+        class iterator {
+            public:
+                iterator();
+                iterator(const U::iterator&);
+                iterator &operator=(const U::iterator&);
+                ~iterator();
+                
+                bool operator==(iterator&);
+                bool operator!=(iterator&);
+                iterator &operator++();
+                iterator operator++(int);
+                iterator &operator--();
+                iterator operator--(int);
+                int &operator*();
+        };
+        
+        iterator begin();
+        iterator end();
+        int front();
+        int back();
+        
+        // END iterator Methods -------------------------------------
+                 
+		// BEGIN Operators: -----------------------------------------
 		// Assignment Operators
 		U &operator=(const U &);  		// Assigns this to a U::U)
 		U &operator=(const std::string &); 	// Assigns this to a std::string
@@ -54,9 +80,9 @@ class U {
 		
 		// END OPERATORS --------------------------------------------------------
 		
-		// Methods of Class 'U' --------------------------------
+		// BEGIN Methods of Class 'U' -------------------------------
 		void readfile(const std::string);         // Calls read_string on each line of a file
-        void read_string(const std::string);      // Parses UTF-8 characters from string
+                void read_string(const std::string);      // Parses UTF-8 characters from string
 		void append(const std::string);           // Calls read_string for a passed string (append to utf_string)
     
 		std::string get()const;                        // Returns full utf_string
@@ -65,14 +91,14 @@ class U {
 		
         int codepoint(const int)const;                // Returns the codepoint of the UTF-8 character at index
         
-		int size() const;                         // Total size of utf_string (utf_index)
+        int size() const;                         // Total size of utf_string (utf_index)
     
         bool empty()const;                             // QUESTION: is the utf_string empty?
         void clear();                             // CAUTION: Clears entire utf_string
         
     private:
         std::string utf_file_name;
-		std::map<int, std::vector<int>> utf_string;
+        std::map<int, std::vector<int>> utf_string;
         std::map<int, int> codepoint_map;
         int utf_index = 0;
     
