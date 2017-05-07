@@ -19,7 +19,6 @@ int main() {
     U::iterator it = u.begin();
     cout << *it << endl;
     assert(*it == 0x1f382);			// birthday cake
-    cout << "ok" << endl;
     it++;
     assert(*it == ' ');
     it = u.end();

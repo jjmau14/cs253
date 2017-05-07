@@ -15,7 +15,7 @@ class U;
 
 class uitor {
         const U* u;
-        int index;
+        int index = 0;
     public:
         uitor(U* u_ = nullptr, int index_ = 0) : u(u_), index(index_){ }
         uitor(const uitor& itor) : u(itor.u),index(itor.index){ }
@@ -46,12 +46,8 @@ class U {
         U(const void* begin, const void* end);
 		~U();                     // Destructor
 		
-        uitor begin(){
-            return uitor();
-        }
-        uitor end(){
-            return uitor();
-        }
+        uitor begin();
+        uitor end();
         int front();
         int back();
         

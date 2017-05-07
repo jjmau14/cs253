@@ -83,11 +83,12 @@ uitor &uitor::operator--(){
     return *this;;
 }
 uitor uitor::operator--(int){
-    const auto save = *this;
+    auto save = *this;
     --*this;
     return save;
 }
 int uitor::operator*(){
+    std::cout << index << std::endl;
     return u->codepoint(index);
 }
 bool uitor::operator==(const uitor &rhs) const{
@@ -95,6 +96,14 @@ bool uitor::operator==(const uitor &rhs) const{
 }
 bool uitor::operator!=(const uitor &rhs) const{
     return !(*this == rhs);
+}
+
+uitor U::begin(){
+    return iterator(this, 0);
+}
+
+ uitor U::end(){
+    return iterator(this, utf_index);
 }
 
 int U::front(){
@@ -353,8 +362,6 @@ std::string U::get(const int start, const int end)const{
 }
             
 int U::codepoint(const int index)const{
-	//if ((unsigned int)index > codepoint_map.size())
-	//	throw std::string("Index \"" + std::to_string(index) + "\" is out of bounds! Method: codepoint");
     auto itor = codepoint_map.find(index);
 	if(itor != codepoint_map.end()){
 		return itor->second;
