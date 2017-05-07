@@ -88,7 +88,6 @@ uitor uitor::operator--(int){
     return save;
 }
 int uitor::operator*(){
-    std::cout << index << std::endl;
     return u->codepoint(index);
 }
 bool uitor::operator==(const uitor &rhs) const{
