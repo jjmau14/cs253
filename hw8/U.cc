@@ -63,55 +63,90 @@ U &U::operator=(const std::string &s){
 }
 // -----------------------------------------------------
 
-// uitor Methods ------------------------------------
+// U::uitor Methods ------------------------------------
+
+// Iterator Assignment Operator: assigns *this to another iterator
 U::uitor &U::uitor::operator=(const uitor& itor){
     u = itor.u;
     index = itor.index;
     return *this;
 }
+
+// Iterator pre-increment operator ---------------------
 U::uitor &U::uitor::operator++(){
     ++index;
     return *this;
 }
+// -----------------------------------------------------
+
+// Iterator post-increment operator --------------------
 U::uitor U::uitor::operator++(int){
     const auto save = *this;
     ++*this;
     return save;
 }
+// -----------------------------------------------------
+
+// Iterator pre-decrement operator ---------------------
 U::uitor &U::uitor::operator--(){
     --index;
     return *this;;
 }
+// -----------------------------------------------------
+
+// Iterator post-decrement operator --------------------
 U::uitor U::uitor::operator--(int){
     auto save = *this;
     --*this;
     return save;
 }
+// -----------------------------------------------------
+
+// Iterator dereference operator: returns codepoint of 
+//      current index of iteration ---------------------
 int U::uitor::operator*(){
     return u->codepoint(index);
 }
+// -----------------------------------------------------
+
+// Iterator comparison operator (==) -------------------
 bool U::uitor::operator==(const uitor &rhs) const{
     return index == rhs.index;
 }
+// -----------------------------------------------------
+
+// Iterator comparison operator (!=) -------------------
 bool U::uitor::operator!=(const uitor &rhs) const{
     return !(*this == rhs);
 }
+// -----------------------------------------------------
 
+// U::begin: returns a U::itor 'pointing' to the first
+//      item in the utf_string -------------------------
 U::uitor U::begin(){
     return uitor(this, 0);
 }
+// -----------------------------------------------------
 
+// U::end: returns a U::itor 'pointing' to the element
+//      after the last item in utf_string --------------
 U::uitor U::end(){
     return uitor(this, utf_index);
 }
+// -----------------------------------------------------
 
+// U::front: DOES NOT RETURN AN ITERATOR; returns the 
+//      first item in the utf_string -------------------
 int U::front(){
     return codepoint(0);
 }
+// -----------------------------------------------------
+
+// U::back: DOES NOT RETURN AN ITERATOR; return the
+//      last item in the utf_string --------------------
 int U::back(){
     return codepoint(utf_index-1);
 }
-    
 // -----------------------------------------------------
 
 // Concatenation Operators (U + U) ---------------------
