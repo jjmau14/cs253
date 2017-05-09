@@ -11,33 +11,32 @@
 #include <vector>
 #include <set>
 #include <map>
-class U;
-
-class uitor {
-        const U* u;
-        int index = 0;
-    public:
-        uitor(U* u_ = nullptr, int index_ = 0) : u(u_), index(index_){ }
-        uitor(const uitor& itor) : u(itor.u),index(itor.index){ }
-        uitor &operator=(const uitor& itor);
-        uitor &operator++();
-        uitor operator++(int);
-        uitor &operator--();
-        uitor operator--(int);
-        int operator*();
-        bool operator==(const uitor &rhs) const;
-        bool operator!=(const uitor &rhs) const;
-        ~uitor(){};
-};
 
 class U {
     std::string utf_file_name;
     std::map<int, std::vector<int>> utf_string;
     std::map<int, int> codepoint_map;
     int utf_index = 0;
-        
+    
+	class uitor {
+        	const U* u;
+        	int index = 0;
+    	public:
+       	 	uitor(U* u_ = nullptr, int index_ = 0) : u(u_), index(index_){ }
+       	 	uitor(const uitor& itor) : u(itor.u),index(itor.index){ }
+       	 	uitor &operator=(const uitor& itor);
+       	 	uitor &operator++();
+       	 	uitor operator++(int);
+       	 	uitor &operator--();
+       	 	uitor operator--(int);
+       	 	int operator*();
+       	 	bool operator==(const uitor &rhs) const;
+       	 	bool operator!=(const uitor &rhs) const;
+    	    ~uitor(){};
+	};
+
 	public:
-            typedef uitor iterator;
+        typedef uitor iterator;
 
 		// Constructors and Destructor -------------------------
 		U();                      // Default Constructor

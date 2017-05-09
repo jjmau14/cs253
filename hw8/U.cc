@@ -64,44 +64,44 @@ U &U::operator=(const std::string &s){
 // -----------------------------------------------------
 
 // uitor Methods ------------------------------------
-uitor &uitor::operator=(const uitor& itor){
+U::uitor &U::uitor::operator=(const uitor& itor){
     u = itor.u;
     index = itor.index;
     return *this;
 }
-uitor &uitor::operator++(){
+U::uitor &U::uitor::operator++(){
     ++index;
     return *this;
 }
-uitor uitor::operator++(int){
+U::uitor U::uitor::operator++(int){
     const auto save = *this;
     ++*this;
     return save;
 }
-uitor &uitor::operator--(){
+U::uitor &U::uitor::operator--(){
     --index;
     return *this;;
 }
-uitor uitor::operator--(int){
+U::uitor U::uitor::operator--(int){
     auto save = *this;
     --*this;
     return save;
 }
-int uitor::operator*(){
+int U::uitor::operator*(){
     return u->codepoint(index);
 }
-bool uitor::operator==(const uitor &rhs) const{
+bool U::uitor::operator==(const uitor &rhs) const{
     return index == rhs.index;
 }
-bool uitor::operator!=(const uitor &rhs) const{
+bool U::uitor::operator!=(const uitor &rhs) const{
     return !(*this == rhs);
 }
 
-uitor U::begin(){
+U::uitor U::begin(){
     return iterator(this, 0);
 }
 
- uitor U::end(){
+U::uitor U::end(){
     return iterator(this, utf_index);
 }
 
