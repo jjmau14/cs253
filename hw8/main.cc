@@ -16,8 +16,7 @@ int main() {
 
     assert(u.front() == 0x1f382);		// birthday cake
     assert(u.back() == 0xbe);		// three-quarters
-    U::iterator it = u.begin();
-    cout << *it << endl;
+    U::uitor it = u.begin();
     assert(*it == 0x1f382);			// birthday cake
     it++;
     assert(*it == ' ');

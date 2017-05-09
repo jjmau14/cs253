@@ -98,11 +98,11 @@ bool U::uitor::operator!=(const uitor &rhs) const{
 }
 
 U::uitor U::begin(){
-    return iterator(this, 0);
+    return uitor(this, 0);
 }
 
 U::uitor U::end(){
-    return iterator(this, utf_index);
+    return uitor(this, utf_index);
 }
 
 int U::front(){
