@@ -11,12 +11,13 @@
 #include <sstream>
 #include "U.h"
 
-// BEGIN ctors/dtors ----------------------------
+
 // Default Constructor -- Accumulated String (utf_string) is empty. 
 U::U(){
     utf_file_name = "";
 }
 // -----------------------------------------------------------------
+
 
 // Copy Constructor -- Copy an existing U object to a new object of type: U. 
 U::U(const U &rhs) : utf_file_name(rhs.utf_file_name), utf_string(rhs.utf_string),
@@ -25,11 +26,13 @@ U::U(const U &rhs) : utf_file_name(rhs.utf_file_name), utf_string(rhs.utf_string
 }
 // -----------------------------------------------------
 
+
 // Test Constructor -- Takes a literal string. ---------
 U::U(std::string s){
     read_string(s);
 }
 
+// Iterator Constructor: adds *it to utf_string --------
 U::U(const void* begin, const void* end){
     std::string s;
     char *itor = (char*)begin;
@@ -41,11 +44,11 @@ U::U(const void* begin, const void* end){
 }
 // -----------------------------------------------------
 
+
 // Destructor -- No dynamic data
 U::~U(){}
-// END ctors/dtors -------------------------------------
 
-// BEGIN Operators -------------------------------------
+
 // Assignment Operator (assign another U) --------------
 U &U::operator=(const U &rhs) {
     utf_file_name = rhs.utf_file_name;
@@ -55,6 +58,7 @@ U &U::operator=(const U &rhs) {
 }
 // -----------------------------------------------------
 
+
 // Assignment Operator (Assign a string to a U) --------
 U &U::operator=(const std::string &s){
 	clear();
@@ -63,7 +67,6 @@ U &U::operator=(const std::string &s){
 }
 // -----------------------------------------------------
 
-// U::uitor Methods ------------------------------------
 
 // Iterator Assignment Operator: assigns *this to another iterator
 U::uitor &U::uitor::operator=(const uitor& itor){
@@ -72,12 +75,14 @@ U::uitor &U::uitor::operator=(const uitor& itor){
     return *this;
 }
 
+
 // Iterator pre-increment operator ---------------------
 U::uitor &U::uitor::operator++(){
     ++index;
     return *this;
 }
 // -----------------------------------------------------
+
 
 // Iterator post-increment operator --------------------
 U::uitor U::uitor::operator++(int){
@@ -87,12 +92,14 @@ U::uitor U::uitor::operator++(int){
 }
 // -----------------------------------------------------
 
+
 // Iterator pre-decrement operator ---------------------
 U::uitor &U::uitor::operator--(){
     --index;
     return *this;;
 }
 // -----------------------------------------------------
+
 
 // Iterator post-decrement operator --------------------
 U::uitor U::uitor::operator--(int){
@@ -102,6 +109,7 @@ U::uitor U::uitor::operator--(int){
 }
 // -----------------------------------------------------
 
+
 // Iterator dereference operator: returns codepoint of 
 //      current index of iteration ---------------------
 int U::uitor::operator*()const{
@@ -109,17 +117,20 @@ int U::uitor::operator*()const{
 }
 // -----------------------------------------------------
 
+
 // Iterator comparison operator (==) -------------------
 bool U::uitor::operator==(const uitor &rhs) const{
     return index == rhs.index;
 }
 // -----------------------------------------------------
 
+
 // Iterator comparison operator (!=) -------------------
 bool U::uitor::operator!=(const uitor &rhs) const{
     return !(*this == rhs);
 }
 // -----------------------------------------------------
+
 
 // U::begin: returns a U::itor 'pointing' to the first
 //      item in the utf_string -------------------------
@@ -128,12 +139,14 @@ U::uitor U::begin(){
 }
 // -----------------------------------------------------
 
+
 // U::end: returns a U::itor 'pointing' to the element
 //      after the last item in utf_string --------------
 U::uitor U::end(){
     return uitor(this, utf_index);
 }
 // -----------------------------------------------------
+
 
 // U::front: DOES NOT RETURN AN ITERATOR; returns the 
 //      first item in the utf_string -------------------
@@ -142,12 +155,14 @@ int U::front(){
 }
 // -----------------------------------------------------
 
+
 // U::back: DOES NOT RETURN AN ITERATOR; return the
 //      last item in the utf_string --------------------
 int U::back(){
     return codepoint(utf_index-1);
 }
 // -----------------------------------------------------
+
 
 // Concatenation Operators (U + U) ---------------------
 U U::operator+(const U &u)const{
@@ -164,6 +179,7 @@ U U::operator+(const U &u)const{
 }
 // -----------------------------------------------------
 
+
 // Concatenation Operators (U + S) ---------------------
 U U::operator+(const std::string &s)const{
 	U other(*this);
@@ -171,6 +187,7 @@ U U::operator+(const std::string &s)const{
 	return other;
 }
 // -----------------------------------------------------
+
 
 // Concatenation Operators (S + U) ---------------------
 U operator+(const std::string &s, const U &u){
@@ -180,12 +197,14 @@ U operator+(const std::string &s, const U &u){
 }
 // -----------------------------------------------------
 
+
 // Append Operators (U += s) ---------------------------
 U &U::operator+=(const std::string &s){
 	append(s);
 	return *this;
 }
 // -----------------------------------------------------
+
 
 // Append Operators (U += u) ---------------------------
 U &U::operator+=(const U &u){
@@ -201,11 +220,13 @@ U &U::operator+=(const U &u){
 }
 // -----------------------------------------------------
 
+
 // Subscripting Operator -------------------------------
 std::string U::operator[](const int i)const{
 	return U::get(i);
 }
-// ------------------------------------------------------
+// -----------------------------------------------------
+
 
 // ostream ---------------------------------------------
 std::ostream &operator<<(std::ostream &out, const U &u){
@@ -213,12 +234,15 @@ std::ostream &operator<<(std::ostream &out, const U &u){
 }
 // -----------------------------------------------------
 
-// Boolean Evaluation
+
+// Boolean Evaluation ----------------------------------
 U::operator bool()const{
 	return (utf_index > 0 || utf_file_name != "");
 }
+// -----------------------------------------------------
 
-// Comparison (U == U) ---------------------
+
+// Comparison (U == U) ---------------------------------
 bool U::operator==(const U &u)const{
 	
 	for (int i = 0 ; i < utf_index ; ++i){
@@ -227,9 +251,10 @@ bool U::operator==(const U &u)const{
 	}
 	return true;
 }
-// -----------------------------------------
+// -----------------------------------------------------
 
-// Comparison (U == S) ---------------------
+
+// Comparison (U == S) ---------------------------------
 bool U::operator==(const std::string &s)const{
 	std::string temp = "";
 	for (int i = 0 ; i < utf_index ; ++i){
@@ -239,7 +264,8 @@ bool U::operator==(const std::string &s)const{
 	}
 	return !(temp != s);
 }
-// -----------------------------------------
+// ------------------------------------------------------
+
 
 // Comparison (S == U) ---------------------
 bool operator==(const std::string &s, const U &u){
@@ -247,11 +273,13 @@ bool operator==(const std::string &s, const U &u){
 }
 // -----------------------------------------
 
+
 // Comparison (U != U) ---------------------
 bool U::operator!=(const U &u)const{
 	return !(*this == u);
 }
 // -----------------------------------------
+
 
 // Comparison (U != S) ---------------------
 bool U::operator!=(const std::string &s)const{
@@ -259,14 +287,14 @@ bool U::operator!=(const std::string &s)const{
 }
 // -----------------------------------------
 
+
 // Comparison (S != U) ---------------------
 bool operator!=(const std::string &s, const U &u){
 	return !(s == u);
 }
 // -----------------------------------------
-// END Operators ---------------------------------------
 
-// BEGIN methods ---------------------------------------
+
 // Methods of Class 'U' --------------------------------
 void U::readfile(const std::string fileName){
     std::ifstream readfile(fileName);
@@ -284,6 +312,7 @@ void U::readfile(const std::string fileName){
         }
     }
 }
+
         
 void U::read_string(const std::string line){
     int i = 0;
@@ -360,9 +389,11 @@ void U::read_string(const std::string line){
     }
 }
 
+
 void U::append(const std::string line){
     read_string(line);
 }
+
 
 std::string U::get()const{
     std::string accum_string = "";
@@ -371,6 +402,7 @@ std::string U::get()const{
     }
     return accum_string;
 }
+
 
 std::string U::get(const int index)const{
     if (index >= utf_index)
@@ -385,6 +417,7 @@ std::string U::get(const int index)const{
     return str;
 }
 
+
 std::string U::get(const int start, const int end)const{
     if (start >= end)
         throw std::string("Invalid half-open interval!");
@@ -394,6 +427,7 @@ std::string U::get(const int start, const int end)const{
         interval_string += get(i);
     return interval_string;
 }
+
             
 int U::codepoint(const int index)const{
     auto itor = codepoint_map.find(index);
@@ -403,13 +437,16 @@ int U::codepoint(const int index)const{
 	return -1;
 }
 
+
 int U::size() const{ 
     return utf_index;
 }
 
+
 bool U::empty()const{
     return (utf_index == 0);
 }
+
 
 void U::clear(){
     utf_string.clear();
@@ -417,4 +454,3 @@ void U::clear(){
 	utf_index = 0;
 	utf_file_name = "";
 }
-// END methods of class U ------------------------------
