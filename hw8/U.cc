@@ -32,6 +32,7 @@ U::U(std::string s){
     read_string(s);
 }
 
+
 // Iterator Constructor: adds *it to utf_string --------
 U::U(const void* begin, const void* end){
     std::string s;
