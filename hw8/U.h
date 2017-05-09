@@ -30,7 +30,7 @@ class U {
        	 		uitor operator++(int);
        	 		uitor &operator--();
        	 		uitor operator--(int);
-       	 		int operator*();
+       	 		int operator*()const;
        	 		bool operator==(const uitor &rhs) const;
        	 		bool operator!=(const uitor &rhs) const;
     	   		~uitor(){};

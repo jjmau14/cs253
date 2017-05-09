@@ -104,7 +104,7 @@ U::uitor U::uitor::operator--(int){
 
 // Iterator dereference operator: returns codepoint of 
 //      current index of iteration ---------------------
-int U::uitor::operator*(){
+int U::uitor::operator*()const{
     return u->codepoint(index);
 }
 // -----------------------------------------------------
