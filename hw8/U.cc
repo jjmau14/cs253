@@ -12,20 +12,20 @@
 #include "U.h"
 
 // BEGIN ctors/dtors ----------------------------
-// Default Constructor -- Accumulated String (utf_string) is empty. --------
+// Default Constructor -- Accumulated String (utf_string) is empty. 
 U::U(){
     utf_file_name = "";
 }
-// -------------------------------------------------------------------------
+// -----------------------------------------------------------------
 
-// Copy Constructor -- Copy an existing U object to a new object of type: U. ----------
+// Copy Constructor -- Copy an existing U object to a new object of type: U. 
 U::U(const U &rhs) : utf_file_name(rhs.utf_file_name), utf_string(rhs.utf_string),
     codepoint_map(rhs.codepoint_map), utf_index(rhs.utf_index){
     // Nothing left to do...
 }
-// ------------------------------------------------------------------------------------
+// -----------------------------------------------------
 
-// Test Constructor -- Takes a literal string. --------------
+// Test Constructor -- Takes a literal string. ---------
 U::U(std::string s){
     read_string(s);
 }
@@ -39,13 +39,13 @@ U::U(const void* begin, const void* end){
     }
     append(s);
 }
-// ----------------------------------------------------------
+// -----------------------------------------------------
 
 // Destructor -- No dynamic data
 U::~U(){}
-// END ctors/dtors --------------------------------------
+// END ctors/dtors -------------------------------------
 
-// BEGIN Operators ---------------------------------------
+// BEGIN Operators -------------------------------------
 // Assignment Operator (assign another U) --------------
 U &U::operator=(const U &rhs) {
     utf_file_name = rhs.utf_file_name;
