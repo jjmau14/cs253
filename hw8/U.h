@@ -79,12 +79,9 @@ class U {
 		bool operator!=(const std::string &)const;
 		friend bool operator!=(const std::string &, const U &);
 		
-		
-		// END OPERATORS --------------------------------------------------------
-		
-		// BEGIN Methods of Class 'U' -------------------------------
+		// U class methods		
 		void readfile(const std::string);         // Calls read_string on each line of a file
-                void read_string(const std::string);      // Parses UTF-8 characters from string
+        void read_string(const std::string);      // Parses UTF-8 characters from string
 		void append(const std::string);           // Calls read_string for a passed string (append to utf_string)
     
 		std::string get()const;                        // Returns full utf_string

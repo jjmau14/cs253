@@ -31,6 +31,7 @@ U::U(const U &rhs) : utf_file_name(rhs.utf_file_name), utf_string(rhs.utf_string
 U::U(std::string s){
     read_string(s);
 }
+// -----------------------------------------------------
 
 
 // Iterator Constructor: adds *it to utf_string --------
