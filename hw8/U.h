@@ -40,7 +40,7 @@ class U {
 		U();                      // Default Constructor
 		U(const U &);             // Copy Constructor
 		U(std::string);           // Test Constructor (Takes a string literal)
-        U(const void* begin, const void* end);
+        U(const char* begin, const char* end);
 		~U();                     // Destructor
 		
         uitor begin();

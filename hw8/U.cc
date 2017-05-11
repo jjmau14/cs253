@@ -35,9 +35,9 @@ U::U(std::string s){
 
 
 // Iterator Constructor: adds *it to utf_string --------
-U::U(const void* begin, const void* end){
+U::U(const char* begin, const char* end){
     std::string s;
-    char *itor = (char*)begin;
+    char* itor = (char*)begin;
     while(itor != end){
         s += *itor;
         itor++;
@@ -430,7 +430,7 @@ std::string U::get(const int start, const int end)const{
     return interval_string;
 }
 
-            
+           
 int U::codepoint(const int index)const{
     auto itor = codepoint_map.find(index);
 	if(itor != codepoint_map.end()){
